@@ -22,10 +22,22 @@ main {
     margin-right: 20px;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
 }
 
 form select,input {
+    width: 100%;
+}
+
+div.film-box {
+    width: 100%;
+}
+
+div.film-box {
+    width: 100%;
+}
+
+div.film-box img {
     width: 100%;
 }

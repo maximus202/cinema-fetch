@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
+    const apiKey = '813e6eeb208b1ee1aab02c28b26c08b1';
 
     function showMenu() {
         $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
@@ -25,16 +26,6 @@ $(document).ready(function () {
         $('main').html(generateSearchForm());
     };
 
-    function generateConfirmFilmTitlePage(responseJson) {
-        return `<h2>Select a Film Title</h2>
-        <div>${responseJson.results[0].original_title}
-        </div>`
-    };
-
-    function confirmFilmTitle(responseJson) {
-        $('main').append(generateConfirmFilmTitlePage(responseJson));
-    };
-
     function fetchFilmData(category, value) {
         console.log(`fetchFilmData() ran with ${category} and ${value}`);
         const options = {
@@ -45,6 +36,17 @@ $(document).ready(function () {
         fetch(`https://api.themoviedb.org/3/search/movie?query=${value}`, options)
             .then(response => response.json())
             .then(responseJson => confirmFilmTitle(responseJson));
+    };
+
+    function confirmFilmTitle(responseJson) {
+        $('main').append(generateConfirmFilmTitlePage(responseJson));
+    };
+
+    function generateConfirmFilmTitlePage(responseJson) {
+        return `<h2>Select a Film</h2>
+        <div class="film-box">
+        <img src="https://image.tmdb.org/t/p/w500${responseJson.results[0].poster_path}" alt="${responseJson.results[0].orgiginal_title} poster image.">
+        </div>`
     };
 
     function runSearch() {
