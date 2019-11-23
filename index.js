@@ -18,8 +18,8 @@ $(document).ready(function () {
                     <option value="film-title">Film Title</option>
                 </select>
                 Enter your value:
-                <input type="text" name="value" required>
-                <input type="submit" name="run-search" id="submit-button">
+                <input type="text" name="value" class="user-input" required>
+                <input type="submit" name="run-search" class="submit-button">
             </fieldset>
         </form>`;
     };
@@ -30,10 +30,14 @@ $(document).ready(function () {
 
     function runSearch() {
         console.log('runSearch() ran');
-        $('main').on('click', '#submit-button', event => {
+        $('main').on('click', '.submit-button', event => {
             console.log('runSearch() ran');
             event.preventDefault();
             console.log('listener working.');
+            const category = $('.search-category option:selected').val();
+            const value = $('.user-input').val();
+            console.log(category);
+            console.log(value);
         });
     };
 
