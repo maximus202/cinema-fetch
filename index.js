@@ -19,13 +19,22 @@ $(document).ready(function () {
                 </select>
                 Enter your value:
                 <input type="text" name="value" required>
-                <input type="submit" name="run-search">
+                <input type="submit" name="run-search" id="submit-button">
             </fieldset>
         </form>`;
     };
 
     function displaySearchForm() {
-        $('main').html(generateSearchForm);
+        $('main').html(generateSearchForm());
+    };
+
+    function runSearch() {
+        console.log('runSearch() ran');
+        $('main').on('click', '#submit-button', event => {
+            console.log('runSearch() ran');
+            event.preventDefault();
+            console.log('listener working.');
+        });
     };
 
     function displayFilmDetails() {
@@ -85,6 +94,7 @@ $(document).ready(function () {
 
 
     displaySearchResults();
+    runSearch();
     displaySearchForm();
     displayFilmDetails();
     createAccount();
