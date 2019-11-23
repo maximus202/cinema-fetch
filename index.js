@@ -13,12 +13,13 @@ $(document).ready(function () {
         <h1>Find similar films to...</h1>
         <form>
             <fieldset>
-                <legend>Film Details</legend>
+                <legend>Film Search</legend>
                 <select name="category" class="search-category" required>
                     <option value="film-title">Film Title</option>
                 </select>
                 Enter your value:
                 <input type="text" name="value" required>
+                <input type="submit" name="run-search">
             </fieldset>
         </form>`;
     };
