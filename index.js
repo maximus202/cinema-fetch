@@ -1,11 +1,8 @@
 $(document).ready(function () {
+    const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
+
     function showMenu() {
         $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
-    };
-
-    function displaySearchResults() {
-        // As a new user,  I want to generate a new film search.
-        console.log('displaySearchResults() ran');
     };
 
     function generateSearchForm() {
@@ -28,6 +25,28 @@ $(document).ready(function () {
         $('main').html(generateSearchForm());
     };
 
+    function generateConfirmFilmTitlePage(responseJson) {
+        return `<h2>Select a Film Title</h2>
+        <div>${responseJson.results[0].original_title}
+        </div>`
+    };
+
+    function confirmFilmTitle(responseJson) {
+        $('main').append(generateConfirmFilmTitlePage(responseJson));
+    };
+
+    function fetchFilmData(category, value) {
+        console.log(`fetchFilmData() ran with ${category} and ${value}`);
+        const options = {
+            headers: new Headers({
+                'Authorization': `Bearer ${tmdbToken}`
+            })
+        };
+        fetch(`https://api.themoviedb.org/3/search/movie?query=${value}`, options)
+            .then(response => response.json())
+            .then(responseJson => confirmFilmTitle(responseJson));
+    };
+
     function runSearch() {
         console.log('runSearch() ran');
         $('main').on('click', '.submit-button', event => {
@@ -38,7 +57,13 @@ $(document).ready(function () {
             const value = $('.user-input').val();
             console.log(category);
             console.log(value);
+            fetchFilmData(category, value);
         });
+    };
+
+    function displaySearchResults() {
+        // As a new user,  I want to generate a new film search.
+        console.log('displaySearchResults() ran');
     };
 
     function displayFilmDetails() {
