@@ -3,9 +3,28 @@ $(document).ready(function () {
         $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
     };
 
-    function displaySearch() {
+    function displaySearchResults() {
         // As a new user,  I want to generate a new film search.
-        console.log('displaySearch() ran');
+        console.log('displaySearchResults() ran');
+    };
+
+    function generateSearchForm() {
+        return `
+        <h1>Find similar films to...</h1>
+        <form>
+            <fieldset>
+                <legend>Film Details</legend>
+                <select name="category" class="search-category" required>
+                    <option value="film-title">Film Title</option>
+                </select>
+                Enter your value:
+                <input type="text" name="value" required>
+            </fieldset>
+        </form>`;
+    };
+
+    function displaySearchForm() {
+        $('main').html(generateSearchForm);
     };
 
     function displayFilmDetails() {
@@ -64,7 +83,8 @@ $(document).ready(function () {
     };
 
 
-    displaySearch();
+    displaySearchResults();
+    displaySearchForm();
     displayFilmDetails();
     createAccount();
     signInToAccount();
