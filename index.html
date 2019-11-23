@@ -15,7 +15,19 @@
         <nav>
         </nav>
     </header>
-    <h1>Find similar films to...</h1>
+    <main>
+        <h1>Find similar films to...</h1>
+        <form>
+            <fieldset>
+                <legend>Film Details</legend>
+                <select name="category" class="search-category" required>
+                    <option value="film-title">Film Title</option>
+                </select>
+                Enter your value:
+                <input type="text" name="value" required>
+            </fieldset>
+        </form>
+    </main>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="index.js"></script>
