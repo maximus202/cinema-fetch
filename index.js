@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function generateSearchForm() {
         return `
-        <h1>Find similar films to...</h1>
+        <h1>Build your smart search</h1>
         <form>
             <fieldset>
                 <legend>Film Search</legend>
@@ -53,13 +53,14 @@ $(document).ready(function () {
 
     function showSearchResults(responseJson) {
         $('main .results').empty();
-        $('main .results').html(`<h2>Select your keywords:</h2>`);
+        $('main .results').html(`<h2>Select your keywords:</h2>
+        <form>`);
         for (let i = 0; i < responseJson.results.length; i++) {
-            $('main .results').append(
-                `<div>
-                ${responseJson.results[i].name}
-                </div>`)
+            $('main .results').append(`
+                <input type="checkbox" name="keyword" value="${responseJson.results[i].name}">${responseJson.results[i].name}
+                `)
         };
+        $('main .results').append(`</form>`);
     };
 
     function displaySearchResults() {

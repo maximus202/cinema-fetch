@@ -25,11 +25,3 @@ main {
 h1, h2 {
     text-align: center;
 }
-
-form select,input {
-    width: 100%;
-}
-
-.film-box {
-    width: 100%;
-}
