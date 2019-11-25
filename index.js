@@ -13,17 +13,16 @@ $(document).ready(function () {
             <fieldset>
                 <legend>Film Search</legend>
                 <select name="category" class="search-category" required>
-                    <option value="film-title">Film Title</option>
+                    <option value="film-title">Keyword</option>
                 </select>
-                Enter your value:
-                <input type="text" name="value" class="user-input" required>
+                <input type="text" name="value" class="user-input" placeholder="Enter a keyword (ex: boxing)" required>
                 <input type="submit" name="run-search" class="submit-button">
             </fieldset>
         </form>`;
     };
 
     function displaySearchForm() {
-        $('main').html(generateSearchForm());
+        $('main .form').html(generateSearchForm());
     };
 
     function fetchFilmData(category, value) {
@@ -33,25 +32,14 @@ $(document).ready(function () {
                 'Authorization': `Bearer ${tmdbToken}`
             })
         };
-        fetch(`https://api.themoviedb.org/3/search/movie?query=${value}`, options)
+        fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
             .then(response => response.json())
-            .then(responseJson => confirmFilmTitle(responseJson));
-    };
-
-    function confirmFilmTitle(responseJson) {
-        $('main').append(generateConfirmFilmTitlePage(responseJson));
-    };
-
-    function generateConfirmFilmTitlePage(responseJson) {
-        return `<h2>Select a Film</h2>
-        <div class="film-box">
-        <img src="https://image.tmdb.org/t/p/w500${responseJson.results[0].poster_path}" alt="${responseJson.results[0].orgiginal_title} poster image.">
-        </div>`
+            .then(responseJson => showSearchResults(responseJson));
     };
 
     function runSearch() {
         console.log('runSearch() ran');
-        $('main').on('click', '.submit-button', event => {
+        $('main .form').on('click', '.submit-button', event => {
             console.log('runSearch() ran');
             event.preventDefault();
             console.log('listener working.');
@@ -61,6 +49,17 @@ $(document).ready(function () {
             console.log(value);
             fetchFilmData(category, value);
         });
+    };
+
+    function showSearchResults(responseJson) {
+        $('main .results').empty();
+        $('main .results').html(`<h2>Select your keywords:</h2>`);
+        for (let i = 0; i < responseJson.results.length; i++) {
+            $('main .results').append(
+                `<div>
+                ${responseJson.results[i].name}
+                </div>`)
+        };
     };
 
     function displaySearchResults() {
