@@ -1,9 +1,14 @@
 const SEARCH = {
-    keywords: [],
-    filmTitle: '',
-    directors: [],
-    year: [],
-    country: '',
+    withKeywords: [],
+    withoutKeywords: [],
+    withGenres: [],
+    withoutGenres: [],
+    withOriginalLanguage: [],
+    primaryReleaseDateStart: '',
+    primaryReleaseDateEnd: '',
+    withPeople: [],
+    withRuntimeStart: '',
+    withRuntimeEnd: '',
 };
 
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
