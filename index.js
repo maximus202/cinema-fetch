@@ -73,12 +73,11 @@ function showSearchResults(responseJson) {
 function setKeywords() {
     $('main').on('change', 'input[name=keyword]', event => {
         const checkedBoxes = $('input[name=keyword]:checked');
-        console.log(checkedBoxes);
-        const checked = checkedBoxes.map(item => {
-            console.log(item.value);
-            return item.value;
-        });
-        SEARCH.keywords = checked;
+        const keywordIds = [];
+        for (let i = 0; i < checkedBoxes.length; i++) {
+            keywordIds.push(checkedBoxes[i].value);
+        };
+        SEARCH.keywords = keywordIds;
         console.log(SEARCH.keywords);
     });
 };
