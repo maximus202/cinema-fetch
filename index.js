@@ -18,27 +18,25 @@ function showMenu() {
     $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
 };
 
-function generateSearchForm() {
+//withKeyword Search start
+function generateWithKeywordSearch() {
     return `
         <h1>Build your smart search</h1>
         <form>
             <fieldset>
-                <legend>Film Search</legend>
-                <select name="category" class="search-category" required>
-                    <option value="film-title">Keyword</option>
-                </select>
-                <input type="text" name="value" class="user-input" placeholder="Enter a keyword (ex: boxing)" required>
-                <input type="submit" name="run-search" class="submit-button">
+                <legend>Keyword to include</legend>
+                <input type="text" name="value" class="with-keyword-input" placeholder="Enter a keyword (ex: boxing)" required>
+                <input type="submit" name="run-search" class="with-keyword-submit-button">
             </fieldset>
         </form>`;
 };
 
-function displaySearchForm() {
-    $('main .form').html(generateSearchForm());
+function displayWithKeywordSearch() {
+    $('main .form').html(generateWithKeywordSearch());
 };
 
-function fetchFilmData(category, value) {
-    console.log(`fetchFilmData() ran with ${category} and ${value}`);
+function fetchKeywordData(value) {
+    console.log(`fetchFilmData() ran with ${value}`);
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -46,46 +44,45 @@ function fetchFilmData(category, value) {
     };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then(response => response.json())
-        .then(responseJson => showSearchResults(responseJson));
+        .then(responseJson => showWithKeywordSearchResults(responseJson));
 };
 
-function runSearch() {
+function runWithKeywordSearch() {
     console.log('runSearch() ran');
-    $('main .form').on('click', '.submit-button', event => {
+    $('main .form').on('click', '.with-keyword-submit-button', event => {
         console.log('runSearch() ran');
         event.preventDefault();
         console.log('listener working.');
-        const category = $('.search-category option:selected').val();
-        const value = $('.user-input').val();
-        console.log(category);
+        const value = $('.with-keyword-input').val();
         console.log(value);
-        fetchFilmData(category, value);
+        fetchKeywordData(value);
     });
 };
 
-function showSearchResults(responseJson) {
-    $('main .results').empty();
-    $('main .results').html(`<h2>Select your keywords:</h2>
+function showWithKeywordSearchResults(responseJson) {
+    //$('main .results').empty();
+    $('main .results').append(`<h2>Select which keywords to include</h2>
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $('main .results').append(`
                 <input type="checkbox" name="keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
                 `)
     };
-    $('main .results').append(`</form>`);
+    $('main .results').append(`</form><p>Want to add a another keyword to include? Simply type it in the keyword search bar above and resubmit.</p>`);
 };
 
-function setKeywords() {
+function setWithKeywords() {
     $('main').on('change', 'input[name=keyword]', event => {
         const checkedBoxes = $('input[name=keyword]:checked');
-        const keywordIds = [];
+        const withKeywordIds = [];
         for (let i = 0; i < checkedBoxes.length; i++) {
-            keywordIds.push(checkedBoxes[i].value);
+            withKeywordIds.push(checkedBoxes[i].value);
         };
-        SEARCH.keywords = keywordIds;
+        SEARCH.keywords = withKeywordIds;
         console.log(SEARCH.keywords);
     });
 };
+//withKeywords search end
 
 function displaySearchResults() {
     // As a new user,  I want to generate a new film search.
@@ -99,9 +96,9 @@ function displayFilmDetails() {
 
 $(function () {
     displaySearchResults();
-    runSearch();
-    setKeywords();
-    displaySearchForm();
+    runWithKeywordSearch();
+    setWithKeywords();
+    displayWithKeywordSearch();
     displayFilmDetails();
     showMenu();
 });
