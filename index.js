@@ -24,7 +24,7 @@ function generateSearchForm() {
         <form>
             <fieldset class="with-keyword">
                 <legend>Keywords to include</legend>
-                <input type="text" name="value" class="with-keyword-input" placeholder="Ex: boxing" required>
+                <input type="text" name="value" class="with-keyword-input" placeholder="Ex: boxing">
                 <input type="submit" name="run-search" class="with-keyword-submit-button">
                 <div class="with-keyword-results">
                 </div>
@@ -52,6 +52,20 @@ function generateSearchForm() {
                 <input type="text" name="start-release-year" class="start-release-year" placeholder="Ex: 1900">
                 To year:
                 <input type="text" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
+            </fieldset>
+            <fieldset class="with-people">
+                <legend>Cast/Crew</legend>
+                <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
+                <input type="submit" name="run-with-people-search" class="with-people-submit-button">
+                <div class="people-results">
+                </div>
+            </fieldset>
+            <fieldset class="runtime">
+                <legend>Runtime</legend>
+                Film duration (in minutes)
+                <input type="text" name="start-runtime" class="start-runtime" placeholder="Ex: 60">
+                -
+                <input type="text" name="end-runtime" class="end-runtime" placeholder="Ex: 120">
             </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
@@ -107,6 +121,17 @@ function fetchLanguagesAvailable() {
         .then(responseJson => showLanguagesAvailable(responseJson));
 };
 
+function fetchWithPeople(value) {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
+        .then(response => response.json())
+        .then(responseJson => showPeopleAvailable(responseJson));
+};
+
 function runKeywordSearch() {
     $('main .form').on('click', '.with-keyword-submit-button', event => {
         event.preventDefault();
@@ -117,6 +142,14 @@ function runKeywordSearch() {
         event.preventDefault();
         const value = $('.without-keyword-input').val();
         fetchWithoutKeywordData(value);
+    });
+};
+
+function runPeopleSearch() {
+    $('main .form').on('click', '.with-people-submit-button', event => {
+        event.preventDefault();
+        const value = $('.with-people-input').val();
+        fetchWithPeople(value);
     });
 };
 
@@ -160,6 +193,14 @@ function showLanguagesAvailable(responseJson) {
         $('.languages-results').append(`<input type="checkbox" name="languages" value="${responseJson[i].iso_639_1}">${responseJson[i].english_name}`)
     };
     $('.languages-results').append(`</form>`);
+};
+
+function showPeopleAvailable(responseJson) {
+    $('.people-results').append(`<form>`);
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $('.people-results').append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`)
+    };
+    $('.people-results').append(`</form>`);
 };
 
 function setWithKeywords() {
@@ -222,11 +263,38 @@ function setLanguages() {
 function setReleaseYear() {
     $('main .form').on('change', 'input[name=start-release-year]', event => {
         const startReleaseYear = $('input[name=start-release-year]:text');
-        console.log(startReleaseYear);
+        SEARCH.primaryReleaseDateStart = startReleaseYear;
+        console.log(SEARCH.primaryReleaseDateStart);
     });
     $('main .form').on('change', 'input[name=end-release-year]', event => {
         const endReleaseYear = $('input[name=end-release-year]:text');
-        console.log(endReleaseYear);
+        SEARCH.primaryReleaseDateEnd = endReleaseYear;
+        console.log(SEARCH.primaryReleaseDateEnd);
+    });
+};
+
+function setPeople() {
+    $('main .form').on('change', 'input[name=with-people]', event => {
+        const people = $('input[name=with-people]:checked');
+        const peopleIds = [];
+        for (let i = 0; i < people.length; i++) {
+            peopleIds.push(people[i].value);
+        };
+        SEARCH.withPeople = peopleIds;
+        console.log(SEARCH.withPeople);
+    });
+};
+
+function setRuntime() {
+    $('main .form').on('change', 'input[name=start-runtime]', event => {
+        const startRuntime = $('input[name=start-runtime]:text');
+        SEARCH.withRuntimeStart = startRuntime;
+        console.log(SEARCH.withRuntimeStart);
+    });
+    $('main .form').on('change', 'input[name=end-runtime]', event => {
+        const endRuntime = $('input[name=end-runtime]:text');
+        SEARCH.withRuntimeEnd = endRuntime;
+        console.log(SEARCH.withRuntimeEnd);
     });
 };
 
@@ -246,10 +314,13 @@ $(function () {
     fetchLanguagesAvailable();
     fetchGenresAvailable()
     runKeywordSearch();
+    runPeopleSearch();
     setWithKeywords();
     setGenres();
     setLanguages();
     setReleaseYear();
+    setPeople();
+    setRuntime();
     setWithoutKeywords();
     displaySearchResults();
     displayFilmDetails();
