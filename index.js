@@ -298,6 +298,37 @@ function setRuntime() {
     });
 };
 
+function generateMasterSearchUrlString() {
+    const withKeywords = SEARCH.withKeywords.join("|");
+    const withoutKeywords = SEARCH.withoutKeywords.join("|");
+    const withGenres = SEARCH.withGenres.join("|");
+    const withoutGenres = SEARCH.withoutGenres.join("|");
+    const withOriginalLanguage = SEARCH.withOriginalLanguage.join("|");
+    const primaryReleaseDateStart = `${SEARCH.primaryReleaseDateStart}`;
+    const primaryReleaseDateEnd = `${SEARCH.primaryReleaseDateEnd}`;
+    const withPeople = SEARCH.withPeople.join("|");
+    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&with_genres=${withGenres}&without_genres=${withoutGenres}&with_original_language=${withOriginalLanguage}&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}`;
+    fetchMasterSearch(masterSearchUrlString);
+};
+
+function fetchMasterSearch(masterSearchUrlString) {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
+        .then(response => response.json())
+        .then(responseJson => console.log(responseJson));
+};
+
+function runMasterSearch() {
+    $('main .form').on('click', '.master-search-submit-button', event => {
+        event.preventDefault();
+        generateMasterSearchUrlString();
+    });
+};
+
 function displaySearchResults() {
     // As a new user,  I want to generate a new film search.
     console.log('displaySearchResults() ran');
@@ -322,6 +353,7 @@ $(function () {
     setPeople();
     setRuntime();
     setWithoutKeywords();
+    runMasterSearch();
     displaySearchResults();
     displayFilmDetails();
 });
