@@ -36,14 +36,14 @@ function generateSearchForm() {
                 <div class="without-keyword-results">
                 </div>
             </fieldset>
-            <fieldset class="languages">
-                <legend>Languages</legend>
-                <div class="languages-results">
-                </div>
-            </fieldset>
             <fieldset class="genres">
                 <legend>Genres</legend>
                 <div class="genres-results">
+                </div>
+            </fieldset>
+            <fieldset class="languages">
+                <legend>Languages</legend>
+                <div class="languages-results">
                 </div>
             </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
@@ -78,17 +78,6 @@ function fetchWithoutKeywordData(value) {
         .then(responseJson => showWithoutKeywordResults(responseJson));
 };
 
-function fetchLanguagesAvailable() {
-    const options = {
-        headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
-        })
-    };
-    fetch('https://api.themoviedb.org/3/configuration/languages', options)
-        .then(response => response.json())
-        .then(responseJson => showLanguagesAvailable(responseJson));
-};
-
 function fetchGenresAvailable() {
     const options = {
         headers: new Headers({
@@ -98,6 +87,17 @@ function fetchGenresAvailable() {
     fetch('https://api.themoviedb.org/3/genre/movie/list', options)
         .then(response => response.json())
         .then(responseJson => showGenresAvailable(responseJson));
+};
+
+function fetchLanguagesAvailable() {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch('https://api.themoviedb.org/3/configuration/languages', options)
+        .then(response => response.json())
+        .then(responseJson => showLanguagesAvailable(responseJson));
 };
 
 function runKeywordSearch() {
@@ -135,24 +135,24 @@ function showWithoutKeywordResults(responseJson) {
     $('.without-keyword-results').append(`</form>`);
 };
 
+function showGenresAvailable(responseJson) {
+    $('.genres-results').append('<form>');
+    for (let i = 0; i < responseJson.genres.length; i++) {
+        $('.genres-results').append(
+            `${responseJson.genres[i].name}
+            <input type="radio" class="na" name="${responseJson.genres[i].name}" value="N/A" checked>N/A
+            <input type="radio" class="include" name="${responseJson.genres[i].name}" value="${responseJson.genres[i].id}">Include
+            <input type="radio" class="exclude" name="${responseJson.genres[i].name}" value="${responseJson.genres[i].id}">Exclude`)
+    };
+    $('.genres-results').append(`</form>`);
+};
+
 function showLanguagesAvailable(responseJson) {
     $('.languages-results').append(`<form>`);
     for (let i = 0; i < responseJson.length; i++) {
         $('.languages-results').append(`<input type="checkbox" name="languages" value="${responseJson[i].iso_639_1}">${responseJson[i].english_name}`)
     };
     $('.languages-results').append(`</form>`);
-};
-
-function showGenresAvailable(responseJson) {
-    $('.genres-results').append('<form>');
-    for (let i = 0; i < responseJson.genres.length; i++) {
-        $('.genres-results').append(
-            `${responseJson.genres[i].name}
-            <input type="radio" name="${responseJson.genres[i].name}" value="N/A" checked>N/A
-            <input type="radio" name="${responseJson.genres[i].name}" value="include">Include
-            <input type="radio" name="${responseJson.genres[i].name}" value="exclude">Exclude`)
-    };
-    $('.genres-results').append(`</form>`);
 };
 
 function setWithKeywords() {
@@ -179,6 +179,39 @@ function setWithoutKeywords() {
     });
 };
 
+function setGenres() {
+    $('main .form').on('change', `.include`, event => {
+        const includedGenres = $(`input.include:checked`);
+        const includedGenreIds = [];
+        for (let i = 0; i < includedGenres.length; i++) {
+            includedGenreIds.push(includedGenres[i].value)
+        };
+        SEARCH.withGenres = includedGenreIds;
+        console.log(SEARCH.withGenres);
+    });
+    $('main .form').on('change', `.exclude`, event => {
+        const excludedGenres = $(`input.exclude:checked`);
+        const excludedGenreIds = [];
+        for (let i = 0; i < excludedGenres.length; i++) {
+            excludedGenreIds.push(excludedGenres[i].value)
+        };
+        SEARCH.withoutGenres = excludedGenreIds;
+        console.log(SEARCH.withoutGenres);
+    });
+};
+
+function setLanguages() {
+    $('main .form').on('change', 'input[name=languages]', event => {
+        const checkedBoxes = $('input[name=languages]:checked');
+        const languageIds = [];
+        for (let i = 0; i < checkedBoxes.length; i++) {
+            languageIds.push(checkedBoxes[i].value)
+        };
+        SEARCH.withOriginalLanguage = languageIds;
+        console.log(SEARCH.withOriginalLanguage);
+    });
+};
+
 function displaySearchResults() {
     // As a new user,  I want to generate a new film search.
     console.log('displaySearchResults() ran');
@@ -196,6 +229,8 @@ $(function () {
     fetchGenresAvailable()
     runKeywordSearch();
     setWithKeywords();
+    setGenres();
+    setLanguages();
     setWithoutKeywords();
     displaySearchResults();
     displayFilmDetails();
