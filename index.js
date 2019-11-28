@@ -46,6 +46,13 @@ function generateSearchForm() {
                 <div class="languages-results">
                 </div>
             </fieldset>
+            <fieldset>
+                <legend>Release Year</legend>
+                From year:
+                <input type="text" name="start-release-year" class="start-release-year" placeholder="Ex: 1900">
+                To year:
+                <input type="text" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
+            </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
 };
@@ -212,6 +219,17 @@ function setLanguages() {
     });
 };
 
+function setReleaseYear() {
+    $('main .form').on('change', 'input[name=start-release-year]', event => {
+        const startReleaseYear = $('input[name=start-release-year]:text');
+        console.log(startReleaseYear);
+    });
+    $('main .form').on('change', 'input[name=end-release-year]', event => {
+        const endReleaseYear = $('input[name=end-release-year]:text');
+        console.log(endReleaseYear);
+    });
+};
+
 function displaySearchResults() {
     // As a new user,  I want to generate a new film search.
     console.log('displaySearchResults() ran');
@@ -231,6 +249,7 @@ $(function () {
     setWithKeywords();
     setGenres();
     setLanguages();
+    setReleaseYear();
     setWithoutKeywords();
     displaySearchResults();
     displayFilmDetails();
