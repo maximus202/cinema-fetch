@@ -37,10 +37,15 @@ function generateSearchForm() {
                 </div>
             </fieldset>
             <fieldset class="languages">
-                <legends>Select the languages you'd like to include</legend>
+                <legend>Languages</legend>
                 <div class="languages-results">
                 </div>
-            </fieldset
+            </fieldset>
+            <fieldset class="genres">
+                <legend>Genres</legend>
+                <div class="genres-results">
+                </div>
+            </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
 };
@@ -84,6 +89,17 @@ function fetchLanguagesAvailable() {
         .then(responseJson => showLanguagesAvailable(responseJson));
 };
 
+function fetchGenresAvailable() {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch('https://api.themoviedb.org/3/genre/movie/list', options)
+        .then(response => response.json())
+        .then(responseJson => showGenresAvailable(responseJson));
+};
+
 function runKeywordSearch() {
     $('main .form').on('click', '.with-keyword-submit-button', event => {
         event.preventDefault();
@@ -124,6 +140,19 @@ function showLanguagesAvailable(responseJson) {
     for (let i = 0; i < responseJson.length; i++) {
         $('.languages-results').append(`<input type="checkbox" name="languages" value="${responseJson[i].iso_639_1}">${responseJson[i].english_name}`)
     };
+    $('.languages-results').append(`</form>`);
+};
+
+function showGenresAvailable(responseJson) {
+    $('.genres-results').append('<form>');
+    for (let i = 0; i < responseJson.genres.length; i++) {
+        $('.genres-results').append(
+            `${responseJson.genres[i].name}
+            <input type="radio" name="${responseJson.genres[i].name}" value="N/A" checked>N/A
+            <input type="radio" name="${responseJson.genres[i].name}" value="include">Include
+            <input type="radio" name="${responseJson.genres[i].name}" value="exclude">Exclude`)
+    };
+    $('.genres-results').append(`</form>`);
 };
 
 function setWithKeywords() {
@@ -164,6 +193,7 @@ $(function () {
     showMenu();
     displaySearchForm();
     fetchLanguagesAvailable();
+    fetchGenresAvailable()
     runKeywordSearch();
     setWithKeywords();
     setWithoutKeywords();
