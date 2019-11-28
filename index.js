@@ -36,6 +36,12 @@ function generateSearchForm() {
                 <div class="without-keyword-results">
                 </div>
             </fieldset>
+            <fieldset class="languages">
+                <legends>Select the languages you'd like to include</legend>
+                <div class="languages-results">
+                </div>
+            </fieldset
+            <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
 };
 
@@ -65,6 +71,17 @@ function fetchWithoutKeywordData(value) {
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then(response => response.json())
         .then(responseJson => showWithoutKeywordResults(responseJson));
+};
+
+function fetchLanguagesAvailable() {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch('https://api.themoviedb.org/3/configuration/languages', options)
+        .then(response => response.json())
+        .then(responseJson => showLanguagesAvailable(responseJson));
 };
 
 function runKeywordSearch() {
@@ -102,6 +119,13 @@ function showWithoutKeywordResults(responseJson) {
     $('.without-keyword-results').append(`</form>`);
 };
 
+function showLanguagesAvailable(responseJson) {
+    $('.languages-results').append(`<form>`);
+    for (let i = 0; i < responseJson.length; i++) {
+        $('.languages-results').append(`<input type="checkbox" name="languages" value="${responseJson[i].iso_639_1}">${responseJson[i].english_name}`)
+    };
+};
+
 function setWithKeywords() {
     $('main .form').on('change', 'input[name=with-keyword]', event => {
         const checkedBoxes = $('input[name=with-keyword]:checked');
@@ -137,11 +161,12 @@ function displayFilmDetails() {
 };
 
 $(function () {
-    displaySearchResults();
+    showMenu();
+    displaySearchForm();
+    fetchLanguagesAvailable();
     runKeywordSearch();
     setWithKeywords();
     setWithoutKeywords();
-    displaySearchForm();
+    displaySearchResults();
     displayFilmDetails();
-    showMenu();
 });
