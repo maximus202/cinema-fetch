@@ -25,3 +25,31 @@ main {
 h1, h2 {
     text-align: center;
 }
+
+.container img {
+    width: 100%;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+     text-align: center;
+     color: white;
+     display: flex;
+}
+
+/* Bottom left text */
+.bottom-left {
+  position: absolute;
+    bottom: 8px;
+    width: 100%;
+    display: flex;
+    align-content: flex-start;
+    padding-left: 20px;
+    padding-right: 70px;
+}
+
+h3 {
+    display: inline-block;
+    text-align: left;
+}

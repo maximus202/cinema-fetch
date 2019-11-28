@@ -319,7 +319,7 @@ function fetchMasterSearch(masterSearchUrlString) {
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then(response => response.json())
-        .then(responseJson => console.log(responseJson));
+        .then(responseJson => displaySearchResults(responseJson));
 };
 
 function runMasterSearch() {
@@ -329,9 +329,16 @@ function runMasterSearch() {
     });
 };
 
-function displaySearchResults() {
-    // As a new user,  I want to generate a new film search.
-    console.log('displaySearchResults() ran');
+function displaySearchResults(responseJson) {
+    console.log(responseJson);
+    $('main .results').empty();
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $('main .results').append(`
+            <div class="container">
+            <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].poster_path}" alt="${responseJson.results[i].original_title}">
+            <div class="bottom-left"><h3>${responseJson.results[i].original_title}</h3></div>
+            </div>`);
+    };
 };
 
 function displayFilmDetails() {
@@ -354,6 +361,5 @@ $(function () {
     setRuntime();
     setWithoutKeywords();
     runMasterSearch();
-    displaySearchResults();
     displayFilmDetails();
 });
