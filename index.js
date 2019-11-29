@@ -9,6 +9,7 @@ const SEARCH = {
     withPeople: [],
     withRuntimeStart: '',
     withRuntimeEnd: '',
+    sortBy: '',
 };
 
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
@@ -70,7 +71,14 @@ function generateSearchForm() {
             </fieldset>
             <fieldset class="sort-by">
                 <legend>Sort by</legend>
-                <input =
+                <select name="sort-by">
+                    <option value="popularity.desc" default>Most Popular</option>
+                    <option value="popularity.asc">Least Popular</option>
+                    <option value="release_date.desc">Release Date (Newest)</option>
+                    <option value="release_date.asc">Release Date (Oldest)</option>
+                    <option value="vote_average.desc">Highest Votes</option>
+                    <option value="vote_average.asc">Lowest Votes</option>
+                </select>
             </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
@@ -338,6 +346,14 @@ function setRuntime() {
     });
 };
 
+function setSortBy() {
+    $('main .form').on('change', 'select[name=sort-by]', event => {
+        const sortBy = $('select[name=sort-by]').val();
+        SEARCH.sortBy = sortBy;
+        console.log(SEARCH.sortBy);
+    })
+};
+
 function generateMasterSearchUrlString() {
     const withKeywords = SEARCH.withKeywords.join("|");
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
@@ -347,7 +363,7 @@ function generateMasterSearchUrlString() {
     const primaryReleaseDateStart = `${SEARCH.primaryReleaseDateStart}`;
     const primaryReleaseDateEnd = `${SEARCH.primaryReleaseDateEnd}`;
     const withPeople = SEARCH.withPeople.join("|");
-    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&with_genres=${withGenres}&without_genres=${withoutGenres}&with_original_language=${withOriginalLanguage}&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}`;
+    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&with_genres=${withGenres}&without_genres=${withoutGenres}&with_original_language=${withOriginalLanguage}&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}&sort_by=${SEARCH.sortBy}`;
     fetchMasterSearch(masterSearchUrlString);
 };
 
@@ -397,6 +413,7 @@ $(function () {
     setReleaseYear();
     setPeople();
     setRuntime();
+    setSortBy();
     setWithoutKeywords();
     runMasterSearch();
 });
