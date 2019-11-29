@@ -157,6 +157,9 @@ function fetchMasterSearch(masterSearchUrlString) {
 };
 
 function fetchMovieDetails(responseJson) {
+    $('main .form').empty();
+    $('main .form').html('<h2>Here are your results!</h2>');
+    $('main .actions').html('<button type="button" name="start-new-search">Start New Search</button> <button type="button" name="load-more-results">Load More Results</button>');
     for (let i = 0; i < responseJson.results.length; i++) {
         const options = {
             headers: new Headers({
@@ -375,10 +378,8 @@ function runMasterSearch() {
 };
 
 function displaySearchResults(responseJson) {
-    console.log(responseJson);
     const imdbId = responseJson.imdbID;
-    console.log(imdbId)
-    $('main .results').append(`
+    $('main .form').append(`
             <div class="container">
                 <img src="${responseJson.Poster}" alt="${responseJson.Title} poster.">
             <div class="bottom-left">
@@ -400,6 +401,14 @@ function displaySearchResults(responseJson) {
             </div>`);
 };
 
+function startNewSearch() {
+    $('main .actions').on('click', 'button[name=start-new-search]', event => {
+        $('main .form').empty();
+        $('main .actions').empty();
+        displaySearchForm();
+    });
+};
+
 $(function () {
     showMenu();
     displaySearchForm();
@@ -416,4 +425,5 @@ $(function () {
     setSortBy();
     setWithoutKeywords();
     runMasterSearch();
+    startNewSearch();
 });
