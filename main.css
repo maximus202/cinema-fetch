@@ -38,7 +38,6 @@ h1, h2 {
      display: flex;
 }
 
-/* Bottom left text */
 .bottom-left {
   position: absolute;
     bottom: 0px;
@@ -46,11 +45,23 @@ h1, h2 {
     display: flex;
     align-content: flex-start;
     padding-left: 20px;
-    padding-right: 70px;
+    padding-right: 20px;
     background-color: #47474780;
 }
 
 h3 {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     text-align: left;
+    width: 100%;
+}
+
+img.more-button {
+    width: 42px;
+    height: 42px;
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-self: center;
 }

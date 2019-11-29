@@ -336,7 +336,10 @@ function displaySearchResults(responseJson) {
         $('main .results').append(`
             <div class="container">
             <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].poster_path}" alt="${responseJson.results[i].original_title}">
-            <div class="bottom-left"><h3>${responseJson.results[i].original_title}</h3></div>
+            <div class="bottom-left">
+            <h3>${responseJson.results[i].original_title}</h3>
+            <img src="more.png" alt="Button that allows you to see more details about this title." class="more-button">
+            </div>
             </div>`);
     };
 };
