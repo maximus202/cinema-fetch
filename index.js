@@ -338,15 +338,18 @@ function displaySearchResults(responseJson) {
             <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].poster_path}" alt="${responseJson.results[i].original_title}">
             <div class="bottom-left">
             <h3>${responseJson.results[i].original_title}</h3>
-            <img src="more.png" alt="Button that allows you to see more details about this title." class="more-button">
+            <a href="#${responseJson.results[i].id}" rel="modal:open">
+                <img src="more.png" alt="Button that allows you to see more details about this title." class="more-button">
+            </a>
+            </div>
+            <div id="${responseJson.results[i].id}" class="modal">
+                <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].backdrop_path}" alt="Still from ${responseJson.results[i].original_title}." class="screen-still">
+                <h3>${responseJson.results[i].original_title} <span class="reviews">${responseJson.results[i].vote_average}<img src="favorite.png" alt="User rating score."></span></h3>
+                <p>${responseJson.results[i].overview}</p>
+                <p>Released: ${responseJson.results[i].release_date}</p>
             </div>
             </div>`);
     };
-};
-
-function displayFilmDetails() {
-    //As a new user, I want to see all details for a specific film.
-    console.log('displayFilmDetails() ran');
 };
 
 $(function () {
@@ -364,5 +367,4 @@ $(function () {
     setRuntime();
     setWithoutKeywords();
     runMasterSearch();
-    displayFilmDetails();
 });

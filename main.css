@@ -56,6 +56,10 @@ h3 {
     width: 100%;
 }
 
+a {
+    display: flex;
+}
+
 img.more-button {
     width: 42px;
     height: 42px;
@@ -64,4 +68,32 @@ img.more-button {
     margin-bottom: 15px;
     display: flex;
     align-self: center;
+}
+
+div.modal {
+    width: 100%;
+    padding: 0;
+    border-radius: 25px;
+}
+
+img.screen-still {
+    position: relative;
+    border-radius: 25px 25px 0 0;
+    width: 100%;
+    height: auto;
+}
+
+span.reviews {
+    display: flex;
+    align-items: center;
+    border: solid 1px black;
+    padding: 3px;
+    margin-left: 10px;
+    font-size: 16px;
+    
+}
+
+span.reviews img {
+    width: 20px;
+    padding-left: 4px;
 }
