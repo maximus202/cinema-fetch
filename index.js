@@ -13,6 +13,7 @@ const SEARCH = {
 
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
 const apiKey = '813e6eeb208b1ee1aab02c28b26c08b1';
+const imdbApiKey = '0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470';
 
 function showMenu() {
     $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
@@ -66,6 +67,10 @@ function generateSearchForm() {
                 <input type="text" name="start-runtime" class="start-runtime" placeholder="Ex: 60">
                 -
                 <input type="text" name="end-runtime" class="end-runtime" placeholder="Ex: 120">
+            </fieldset>
+            <fieldset class="sort-by">
+                <legend>Sort by</legend>
+                <input =
             </fieldset>
             <input type="submit" name="run-master-search" class="master-search-submit-button">
         </form>`;
@@ -130,6 +135,41 @@ function fetchWithPeople(value) {
     fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
         .then(response => response.json())
         .then(responseJson => showPeopleAvailable(responseJson));
+};
+
+function fetchMasterSearch(masterSearchUrlString) {
+    const options = {
+        headers: new Headers({
+            'Authorization': `Bearer ${tmdbToken}`
+        })
+    };
+    fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
+        .then(response => response.json())
+        .then(responseJson => fetchMovieDetails(responseJson));
+};
+
+function fetchMovieDetails(responseJson) {
+    for (let i = 0; i < responseJson.results.length; i++) {
+        const options = {
+            headers: new Headers({
+                'Authorization': `Bearer ${tmdbToken}`
+            })
+        };
+        fetch(`https://api.themoviedb.org/3/movie/${responseJson.results[i].id}`, options)
+            .then(response => response.json())
+            .then(responseJson => fetchFilmDetailsFromImdb(responseJson.imdb_id));
+    };
+};
+
+function fetchFilmDetailsFromImdb(imdbId) {
+    const imdbOptions = {
+        headers: new Headers({
+            'X-RapidAPI-Key': `0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470`
+        })
+    };
+    fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
+        .then(response => response.json())
+        .then(responseJson => displaySearchResults(responseJson));
 };
 
 function runKeywordSearch() {
@@ -311,17 +351,6 @@ function generateMasterSearchUrlString() {
     fetchMasterSearch(masterSearchUrlString);
 };
 
-function fetchMasterSearch(masterSearchUrlString) {
-    const options = {
-        headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
-        })
-    };
-    fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
-        .then(response => response.json())
-        .then(responseJson => displaySearchResults(responseJson));
-};
-
 function runMasterSearch() {
     $('main .form').on('click', '.master-search-submit-button', event => {
         event.preventDefault();
@@ -331,25 +360,28 @@ function runMasterSearch() {
 
 function displaySearchResults(responseJson) {
     console.log(responseJson);
-    $('main .results').empty();
-    for (let i = 0; i < responseJson.results.length; i++) {
-        $('main .results').append(`
+    const imdbId = responseJson.imdbID;
+    console.log(imdbId)
+    $('main .results').append(`
             <div class="container">
-            <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].poster_path}" alt="${responseJson.results[i].original_title}">
+                <img src="${responseJson.Poster}" alt="${responseJson.Title} poster.">
             <div class="bottom-left">
-            <h3>${responseJson.results[i].original_title}</h3>
-            <a href="#${responseJson.results[i].id}" rel="modal:open">
-                <img src="more.png" alt="Button that allows you to see more details about this title." class="more-button">
-            </a>
+                <h3>${responseJson.Title}</h3>
+                <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button."></a>
             </div>
-            <div id="${responseJson.results[i].id}" class="modal">
-                <img src="https://image.tmdb.org/t/p/w500${responseJson.results[i].backdrop_path}" alt="Still from ${responseJson.results[i].original_title}." class="screen-still">
-                <h3>${responseJson.results[i].original_title} <span class="reviews">${responseJson.results[i].vote_average}<img src="favorite.png" alt="User rating score."></span></h3>
-                <p>${responseJson.results[i].overview}</p>
-                <p>Released: ${responseJson.results[i].release_date}</p>
+            <div id="${imdbId}" class="modal">
+                <img src="${responseJson.Poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
+                <section class="title_and_score">
+                <h3>${responseJson.Title} <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
+                </section>
+                <p>${responseJson.Plot}</p>
+                <p>Released: ${responseJson.Year}</p>
+                <p>Genre: ${responseJson.Genre}</p>
+                <p>Director: ${responseJson.Director}</p>
+                <p>Actors: ${responseJson.Actors}</p>
+                <p>Rated: ${responseJson.Rated}</p>
             </div>
             </div>`);
-    };
 };
 
 $(function () {
