@@ -41,12 +41,13 @@ h1, h2 {
 /* Bottom left text */
 .bottom-left {
   position: absolute;
-    bottom: 8px;
+    bottom: 0px;
     width: 100%;
     display: flex;
     align-content: flex-start;
     padding-left: 20px;
     padding-right: 70px;
+    background-color: #47474780;
 }
 
 h3 {
