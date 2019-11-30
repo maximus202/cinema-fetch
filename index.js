@@ -1,10 +1,11 @@
 const SEARCH = {
     withKeywords: [],
     withoutKeywords: [],
-    primaryReleaseDateStart: [],
-    primaryReleaseDateEnd: [],
+    primaryReleaseDateStart: '',
+    primaryReleaseDateEnd: '',
     withPeople: [],
-    sortBy: ['popularity.desc'],
+    sortBy: 'popularity.desc',
+    page: 1,
 };
 
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
@@ -109,7 +110,8 @@ function fetchMasterSearch(masterSearchUrlString) {
 };
 
 function fetchMovieDetails(responseJson) {
-    $('main .form').html('<h2>Here are your results!</h2>');
+    $('main .form').empty();
+    $('main .results').append('<h2>Similar films to your search:</h2>');
     $('main .actions').html('<button type="button" name="start-new-search">Start New Search</button> <button type="button" name="load-more-results">Load More Results</button>');
     for (let i = 0; i < responseJson.results.length; i++) {
         const options = {
@@ -246,7 +248,7 @@ function generateMasterSearchUrlString() {
     const withKeywords = SEARCH.withKeywords.join("|");
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
     const withPeople = SEARCH.withPeople.join("|");
-    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords=${withoutKeywords}&primary_release_date.gte=${SEARCH.primaryReleaseDateStart}&primary_release_date.lte=${SEARCH.primaryReleaseDateEnd}&with_people=${withPeople}&sort_by=${SEARCH.sortBy}`;
+    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords=${withoutKeywords}&primary_release_date.gte=${SEARCH.primaryReleaseDateStart}&primary_release_date.lte=${SEARCH.primaryReleaseDateEnd}&with_people=${withPeople}&sort_by=${SEARCH.sortBy}&page=${SEARCH.page}`;
     console.log(masterSearchUrlString);
     fetchMasterSearch(masterSearchUrlString);
 };
@@ -260,7 +262,7 @@ function runMasterSearch() {
 
 function displaySearchResults(responseJson) {
     const imdbId = responseJson.imdbID;
-    $('main .form').append(`
+    $('main .results').append(`
             <div class="container">
                 <img src="${responseJson.Poster}" alt="${responseJson.Title} poster.">
             <div class="bottom-left">
@@ -290,6 +292,8 @@ function startNewSearch() {
 
 function loadMoreResults() {
     $('main .actions').on('click', 'button[name=load-more-results]', event => {
+        SEARCH.page += 1;
+        console.log(SEARCH.page)
         $('main .form').append(generateMasterSearchUrlString());
     });
 };
