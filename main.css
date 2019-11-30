@@ -56,18 +56,35 @@ img.more-button {
 }
 
 div.modal {
-    padding: 0;
+    padding: 15px;
     border-radius: 25px;
+
 }
 
 img.screen-still {
     width: 100%;
-    border-radius: 25px 25px 0 0;
+    border-radius: 25px;
 }
 
 section.title_and_score {
     display: flex;
+}
 
+span.title {
+    width: 100%;
+}
+
+span.reviews {
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+    border: solid 1px black;
+    padding: 1px 6px;
+}
+
+span.reviews img {
+    padding-left: 5px;
+    width: 23px;
 }
 
 footer img {

@@ -285,7 +285,7 @@ function displaySearchResults(responseJson) {
             <div id="${imdbId}" class="modal">
                 <img src="${responseJson.Poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
                 <section class="title_and_score">
-                <h3>${responseJson.Title} <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
+                <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
                 </section>
                 <p>${responseJson.Plot}</p>
                 <p>Released: ${responseJson.Year}</p>
