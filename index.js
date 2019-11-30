@@ -23,6 +23,8 @@ function generateSearchForm() {
                 <div class="with-keyword-results">
                 </div>
             </fieldset>
+        </form>
+        <form>
             <fieldset class="without-keyword">
                 <legend>Keywords to exclude</legend>
                 <input type="text" name="value" class="without-keyword-input" placeholder="Ex: boxing day">
@@ -30,6 +32,8 @@ function generateSearchForm() {
                 <div class="without-keyword-results">
                 </div>
             </fieldset>
+        </form>
+        <form>
             <fieldset>
                 <legend>Release Year</legend>
                 From year:
@@ -37,6 +41,8 @@ function generateSearchForm() {
                 To year:
                 <input type="date" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
             </fieldset>
+        </form>
+        <form>
             <fieldset class="with-people">
                 <legend>Cast/Crew</legend>
                 <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
@@ -44,6 +50,8 @@ function generateSearchForm() {
                 <div class="people-results">
                 </div>
             </fieldset>
+        </form>
+        <form>
             <fieldset class="sort-by">
                 <legend>Sort by</legend>
                 <select name="sort-by">
@@ -55,8 +63,8 @@ function generateSearchForm() {
                     <option value="vote_average.asc">Lowest Votes</option>
                 </select>
             </fieldset>
-            <input type="submit" name="run-master-search" class="master-search-submit-button">
-        </form>`;
+        </form>
+            <input type="submit" name="run-master-search" class="master-search-submit-button">`;
 };
 
 function displaySearchForm() {

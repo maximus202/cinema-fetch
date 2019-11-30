@@ -5,14 +5,8 @@
 header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-}
-
-nav img {
-    width: 30px;
-    display: flex;
-    margin-right: 20px;
 }
 
 main {
@@ -68,48 +62,9 @@ img.screen-still {
 
 section.title_and_score {
     display: flex;
-    
+
 }
 
-/*a {
-    display: flex;
+footer img {
+    width: 150px;
 }
-
-img.more-button {
-    width: 42px;
-    height: 42px;
-    margin-left: 20px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    align-self: center;
-}
-
-div.modal {
-    width: 100%;
-    padding: 0;
-    border-radius: 25px;
-}
-
-img.screen-still {
-    position: relative;
-    border-radius: 25px 25px 0 0;
-    width: 100%;
-    height: auto;
-}
-
-span.reviews {
-    display: flex;
-    align-items: center;
-    border: solid 1px black;
-    padding: 3px;
-    margin-left: 10px;
-    font-size: 16px;
-    
-}
-
-span.reviews img {
-    width: 20px;
-    padding-left: 4px;
-}
-*/
