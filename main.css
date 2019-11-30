@@ -126,26 +126,37 @@ form {
     width: 100%;
 }
 
+div.results {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 div.container {
-    width: 125px;
+    width: 150px;
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 5px;
+    display: flex;
+    flex-grow: 2;
 }
 
 /*poster*/
 div.container img {
-    width: 125px;
+    width: 150px;
+    display: flex;
+    flex-grow: 2;
 }
 
 div.bottom-left {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 125px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: wheat;
 }
 
 /*More details button*/
@@ -190,11 +201,11 @@ footer img {
 
 @media only screen and (min-width: 426px) {
   main {
-    width: 80%;
+    
   }
 
   div.modal {
-      width: 350px;
+    width: 350px;
   }
 }
 
