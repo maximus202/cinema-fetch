@@ -14,46 +14,52 @@ const imdbApiKey = '0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470';
 
 function generateSearchForm() {
     return `
-        <h1>Build your smart search</h1>
+        <h1>Find hidden-gems to watch, with precision.</h1>
+        <h2>Use the form below to find your next watch!</h2>
         <form>
             <fieldset class="with-keyword">
-                <legend>Keywords to include</legend>
-                <input type="text" name="value" class="with-keyword-input" placeholder="Ex: boxing">
-                <input type="submit" name="run-search" class="with-keyword-submit-button">
+                <legend>Step 1: Keywords to include</legend>
+                <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Simply provide a keyword in the box below and click "Submit" to search for available keywords.</p>
+                <input type="text" name="value" class="with-keyword-input" placeholder="Enter your keyword here.">
+                <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find keywords to include">
                 <div class="with-keyword-results">
                 </div>
             </fieldset>
         </form>
         <form>
             <fieldset class="without-keyword">
-                <legend>Keywords to exclude</legend>
-                <input type="text" name="value" class="without-keyword-input" placeholder="Ex: boxing day">
-                <input type="submit" name="run-search" class="without-keyword-submit-button">
+                <legend>Step 2: Keywords to exclude</legend>
+                <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement here. Use the box below to provide keywords you want to EXCLUDE in your search.</p>
+                <input type="text" name="value" class="without-keyword-input" placeholder="Enter your keyword here.">
+                <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find keywords to exclude">
                 <div class="without-keyword-results">
                 </div>
             </fieldset>
         </form>
         <form>
             <fieldset>
-                <legend>Release Year</legend>
-                From year:
-                <input type="date" name="start-release-year" class="start-release-year" placeholder="Ex: 1900">
-                To year:
-                <input type="date" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
+                <legend>Step 3: Release Year</legend>
+                <p>Feelin' nostalgic? You can use this date range feature to search for films in a specific time frame.</p>
+                Provide a start date:
+                <input type="date" name="start-release-year" class="start-release-year">
+                Provide an end date:
+                <input type="date" name="end-release-year" class="end-release-year">
             </fieldset>
         </form>
         <form>
             <fieldset class="with-people">
-                <legend>Cast/Crew</legend>
+                <legend>Step 4: Cast/Crew</legend>
+                <p>Fan of Tim Burton's eccentric style or Quentin Tarantino's... well, there's no word for Tarantino's style. You can use this feature to find movies with styles similar to your favorite director/writer/actor/whoever.</p>
                 <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
-                <input type="submit" name="run-with-people-search" class="with-people-submit-button">
+                <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find people">
                 <div class="people-results">
                 </div>
             </fieldset>
         </form>
         <form>
             <fieldset class="sort-by">
-                <legend>Sort by</legend>
+                <legend>Step 5: Sort by</legend>
+                <p>Now for the cherry on top. How would you like to display your results?</p>
                 <select name="sort-by">
                     <option value="popularity.desc">Most Popular</option>
                     <option value="popularity.asc">Least Popular</option>
@@ -64,7 +70,7 @@ function generateSearchForm() {
                 </select>
             </fieldset>
         </form>
-            <input type="submit" name="run-master-search" class="master-search-submit-button">`;
+            <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
 };
 
 function displaySearchForm() {
@@ -119,7 +125,6 @@ function fetchMasterSearch(masterSearchUrlString) {
 
 function fetchMovieDetails(responseJson) {
     $('main .form').empty();
-    $('main .results').append('<h2>Similar films to your search:</h2>');
     $('main .actions').html('<button type="button" name="start-new-search">Start New Search</button> <button type="button" name="load-more-results">Load More Results</button>');
     for (let i = 0; i < responseJson.results.length; i++) {
         const options = {
@@ -275,7 +280,7 @@ function displaySearchResults(responseJson) {
                 <img src="${responseJson.Poster}" alt="${responseJson.Title} poster.">
             <div class="bottom-left">
                 <h3>${responseJson.Title}</h3>
-                <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button."></a>
+                <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button." class="more-button"></a>
             </div>
             <div id="${imdbId}" class="modal">
                 <img src="${responseJson.Poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
