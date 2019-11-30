@@ -1,9 +1,6 @@
 const SEARCH = {
     withKeywords: [],
     withoutKeywords: [],
-    withGenres: [],
-    withoutGenres: [],
-    withOriginalLanguage: [],
     primaryReleaseDateStart: '',
     primaryReleaseDateEnd: '',
     withPeople: [],
@@ -15,10 +12,6 @@ const SEARCH = {
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
 const apiKey = '813e6eeb208b1ee1aab02c28b26c08b1';
 const imdbApiKey = '0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470';
-
-function showMenu() {
-    $('nav').html('<img src="blacknav.png" alt="Navigation menu icon.">');
-};
 
 function generateSearchForm() {
     return `
@@ -36,16 +29,6 @@ function generateSearchForm() {
                 <input type="text" name="value" class="without-keyword-input" placeholder="Ex: boxing day">
                 <input type="submit" name="run-search" class="without-keyword-submit-button">
                 <div class="without-keyword-results">
-                </div>
-            </fieldset>
-            <fieldset class="genres">
-                <legend>Genres</legend>
-                <div class="genres-results">
-                </div>
-            </fieldset>
-            <fieldset class="languages">
-                <legend>Languages</legend>
-                <div class="languages-results">
                 </div>
             </fieldset>
             <fieldset>
@@ -112,28 +95,6 @@ function fetchWithoutKeywordData(value) {
         .then(responseJson => showWithoutKeywordResults(responseJson));
 };
 
-function fetchGenresAvailable() {
-    const options = {
-        headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
-        })
-    };
-    fetch('https://api.themoviedb.org/3/genre/movie/list', options)
-        .then(response => response.json())
-        .then(responseJson => showGenresAvailable(responseJson));
-};
-
-function fetchLanguagesAvailable() {
-    const options = {
-        headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
-        })
-    };
-    fetch('https://api.themoviedb.org/3/configuration/languages', options)
-        .then(response => response.json())
-        .then(responseJson => showLanguagesAvailable(responseJson));
-};
-
 function fetchWithPeople(value) {
     const options = {
         headers: new Headers({
@@ -157,7 +118,6 @@ function fetchMasterSearch(masterSearchUrlString) {
 };
 
 function fetchMovieDetails(responseJson) {
-    $('main .form').empty();
     $('main .form').html('<h2>Here are your results!</h2>');
     $('main .actions').html('<button type="button" name="start-new-search">Start New Search</button> <button type="button" name="load-more-results">Load More Results</button>');
     for (let i = 0; i < responseJson.results.length; i++) {
@@ -226,26 +186,6 @@ function showWithoutKeywordResults(responseJson) {
     $('.without-keyword-results').append(`</form>`);
 };
 
-function showGenresAvailable(responseJson) {
-    $('.genres-results').append('<form>');
-    for (let i = 0; i < responseJson.genres.length; i++) {
-        $('.genres-results').append(
-            `${responseJson.genres[i].name}
-            <input type="radio" class="na" name="${responseJson.genres[i].name}" value="N/A" checked>N/A
-            <input type="radio" class="include" name="${responseJson.genres[i].name}" value="${responseJson.genres[i].id}">Include
-            <input type="radio" class="exclude" name="${responseJson.genres[i].name}" value="${responseJson.genres[i].id}">Exclude`)
-    };
-    $('.genres-results').append(`</form>`);
-};
-
-function showLanguagesAvailable(responseJson) {
-    $('.languages-results').append(`<form>`);
-    for (let i = 0; i < responseJson.length; i++) {
-        $('.languages-results').append(`<input type="checkbox" name="languages" value="${responseJson[i].iso_639_1}">${responseJson[i].english_name}`)
-    };
-    $('.languages-results').append(`</form>`);
-};
-
 function showPeopleAvailable(responseJson) {
     $('.people-results').append(`<form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
@@ -275,39 +215,6 @@ function setWithoutKeywords() {
         };
         SEARCH.withoutKeywords = keywordIds;
         console.log(SEARCH.withoutKeywords);
-    });
-};
-
-function setGenres() {
-    $('main .form').on('change', `.include`, event => {
-        const includedGenres = $(`input.include:checked`);
-        const includedGenreIds = [];
-        for (let i = 0; i < includedGenres.length; i++) {
-            includedGenreIds.push(includedGenres[i].value)
-        };
-        SEARCH.withGenres = includedGenreIds;
-        console.log(SEARCH.withGenres);
-    });
-    $('main .form').on('change', `.exclude`, event => {
-        const excludedGenres = $(`input.exclude:checked`);
-        const excludedGenreIds = [];
-        for (let i = 0; i < excludedGenres.length; i++) {
-            excludedGenreIds.push(excludedGenres[i].value)
-        };
-        SEARCH.withoutGenres = excludedGenreIds;
-        console.log(SEARCH.withoutGenres);
-    });
-};
-
-function setLanguages() {
-    $('main .form').on('change', 'input[name=languages]', event => {
-        const checkedBoxes = $('input[name=languages]:checked');
-        const languageIds = [];
-        for (let i = 0; i < checkedBoxes.length; i++) {
-            languageIds.push(checkedBoxes[i].value)
-        };
-        SEARCH.withOriginalLanguage = languageIds;
-        console.log(SEARCH.withOriginalLanguage);
     });
 };
 
@@ -360,13 +267,10 @@ function setSortBy() {
 function generateMasterSearchUrlString() {
     const withKeywords = SEARCH.withKeywords.join("|");
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
-    const withGenres = SEARCH.withGenres.join("|");
-    const withoutGenres = SEARCH.withoutGenres.join("|");
-    const withOriginalLanguage = SEARCH.withOriginalLanguage.join("|");
     const primaryReleaseDateStart = `${SEARCH.primaryReleaseDateStart}`;
     const primaryReleaseDateEnd = `${SEARCH.primaryReleaseDateEnd}`;
     const withPeople = SEARCH.withPeople.join("|");
-    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&with_genres=${withGenres}&without_genres=${withoutGenres}&with_original_language=${withOriginalLanguage}&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}&sort_by=${SEARCH.sortBy}`;
+    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}&sort_by=${SEARCH.sortBy}`;
     fetchMasterSearch(masterSearchUrlString);
 };
 
@@ -403,22 +307,21 @@ function displaySearchResults(responseJson) {
 
 function startNewSearch() {
     $('main .actions').on('click', 'button[name=start-new-search]', event => {
-        $('main .form').empty();
-        $('main .actions').empty();
-        displaySearchForm();
+        location.reload();
+    });
+};
+
+function loadMoreResults() {
+    $('main .actions').on('click', 'button[name=load-more-results]', event => {
+        $('main .form').append(generateMasterSearchUrlString());
     });
 };
 
 $(function () {
-    showMenu();
     displaySearchForm();
-    fetchLanguagesAvailable();
-    fetchGenresAvailable()
     runKeywordSearch();
     runPeopleSearch();
     setWithKeywords();
-    setGenres();
-    setLanguages();
     setReleaseYear();
     setPeople();
     setRuntime();
@@ -426,4 +329,5 @@ $(function () {
     setWithoutKeywords();
     runMasterSearch();
     startNewSearch();
+    loadMoreResults();
 });
