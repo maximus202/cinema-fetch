@@ -1,12 +1,10 @@
 const SEARCH = {
     withKeywords: [],
     withoutKeywords: [],
-    primaryReleaseDateStart: '',
-    primaryReleaseDateEnd: '',
+    primaryReleaseDateStart: [],
+    primaryReleaseDateEnd: [],
     withPeople: [],
-    withRuntimeStart: '',
-    withRuntimeEnd: '',
-    sortBy: '',
+    sortBy: ['popularity.desc'],
 };
 
 const tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk';
@@ -34,9 +32,9 @@ function generateSearchForm() {
             <fieldset>
                 <legend>Release Year</legend>
                 From year:
-                <input type="text" name="start-release-year" class="start-release-year" placeholder="Ex: 1900">
+                <input type="date" name="start-release-year" class="start-release-year" placeholder="Ex: 1900">
                 To year:
-                <input type="text" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
+                <input type="date" name="end-release-year" class="end-release-year" placeholder="Ex: 2019">
             </fieldset>
             <fieldset class="with-people">
                 <legend>Cast/Crew</legend>
@@ -45,17 +43,10 @@ function generateSearchForm() {
                 <div class="people-results">
                 </div>
             </fieldset>
-            <fieldset class="runtime">
-                <legend>Runtime</legend>
-                Film duration (in minutes)
-                <input type="text" name="start-runtime" class="start-runtime" placeholder="Ex: 60">
-                -
-                <input type="text" name="end-runtime" class="end-runtime" placeholder="Ex: 120">
-            </fieldset>
             <fieldset class="sort-by">
                 <legend>Sort by</legend>
                 <select name="sort-by">
-                    <option value="popularity.desc" default>Most Popular</option>
+                    <option value="popularity.desc">Most Popular</option>
                     <option value="popularity.asc">Least Popular</option>
                     <option value="release_date.desc">Release Date (Newest)</option>
                     <option value="release_date.asc">Release Date (Oldest)</option>
@@ -220,12 +211,12 @@ function setWithoutKeywords() {
 
 function setReleaseYear() {
     $('main .form').on('change', 'input[name=start-release-year]', event => {
-        const startReleaseYear = $('input[name=start-release-year]:text');
+        const startReleaseYear = $('input[name=start-release-year]').val();
         SEARCH.primaryReleaseDateStart = startReleaseYear;
         console.log(SEARCH.primaryReleaseDateStart);
     });
     $('main .form').on('change', 'input[name=end-release-year]', event => {
-        const endReleaseYear = $('input[name=end-release-year]:text');
+        const endReleaseYear = $('input[name=end-release-year]').val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
         console.log(SEARCH.primaryReleaseDateEnd);
     });
@@ -243,19 +234,6 @@ function setPeople() {
     });
 };
 
-function setRuntime() {
-    $('main .form').on('change', 'input[name=start-runtime]', event => {
-        const startRuntime = $('input[name=start-runtime]:text');
-        SEARCH.withRuntimeStart = startRuntime;
-        console.log(SEARCH.withRuntimeStart);
-    });
-    $('main .form').on('change', 'input[name=end-runtime]', event => {
-        const endRuntime = $('input[name=end-runtime]:text');
-        SEARCH.withRuntimeEnd = endRuntime;
-        console.log(SEARCH.withRuntimeEnd);
-    });
-};
-
 function setSortBy() {
     $('main .form').on('change', 'select[name=sort-by]', event => {
         const sortBy = $('select[name=sort-by]').val();
@@ -267,10 +245,9 @@ function setSortBy() {
 function generateMasterSearchUrlString() {
     const withKeywords = SEARCH.withKeywords.join("|");
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
-    const primaryReleaseDateStart = `${SEARCH.primaryReleaseDateStart}`;
-    const primaryReleaseDateEnd = `${SEARCH.primaryReleaseDateEnd}`;
     const withPeople = SEARCH.withPeople.join("|");
-    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords${withoutKeywords}=&primary_release_date.gte=${primaryReleaseDateStart}&primary_release_date.lte=${primaryReleaseDateEnd}&with_people=${withPeople}&with_runtime.gte=${SEARCH.withRuntimeStart}&with_runtime.lte=${SEARCH.withRuntimeEnd}&sort_by=${SEARCH.sortBy}`;
+    const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords=${withoutKeywords}&primary_release_date.gte=${SEARCH.primaryReleaseDateStart}&primary_release_date.lte=${SEARCH.primaryReleaseDateEnd}&with_people=${withPeople}&sort_by=${SEARCH.sortBy}`;
+    console.log(masterSearchUrlString);
     fetchMasterSearch(masterSearchUrlString);
 };
 
@@ -324,7 +301,6 @@ $(function () {
     setWithKeywords();
     setReleaseYear();
     setPeople();
-    setRuntime();
     setSortBy();
     setWithoutKeywords();
     runMasterSearch();
