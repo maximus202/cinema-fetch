@@ -134,9 +134,8 @@ footer img {
   div.container img {
     flex-grow: 2;
     width: 200px;
-  };
+  }
 
   div.bottom-left img {
     width: 25px;
-}
 }
