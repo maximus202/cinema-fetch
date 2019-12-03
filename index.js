@@ -102,6 +102,17 @@ function displaySearchForm() {
     $("main .form").html(generateSearchForm());
 };
 
+function showWithKeywordResults(responseJson) {
+    $(".with-keyword-results").append(`<h2>Select your keywords to include:</h2>
+        <form>`);
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $(".with-keyword-results").append(`
+                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                `)
+    };
+    $(".with-keyword-results").append(`</form>`);
+};
+
 function fetchWithKeywordData(value) {
     const options = {
         headers: new Headers({
@@ -111,6 +122,17 @@ function fetchWithKeywordData(value) {
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then((response) => response.json())
         .then((responseJson) => showWithKeywordResults(responseJson));
+};
+
+function showWithoutKeywordResults(responseJson) {
+    $(".without-keyword-results").append(`<h2>Select your keywords to exclude:</h2>
+        <form>`);
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $(".without-keyword-results").append(`
+                <input type="checkbox" name="without-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                `);
+    };
+    $(".without-keyword-results").append(`</form>`);
 };
 
 function fetchWithoutKeywordData(value) {
@@ -124,6 +146,14 @@ function fetchWithoutKeywordData(value) {
         .then((responseJson) => showWithoutKeywordResults(responseJson));
 };
 
+function showPeopleAvailable(responseJson) {
+    $(".people-results").append(`<form>`);
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $(".people-results").append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`);
+    };
+    $(".people-results").append(`</form>`);
+};
+
 function fetchWithPeople(value) {
     const options = {
         headers: new Headers({
@@ -135,28 +165,51 @@ function fetchWithPeople(value) {
         .then((responseJson) => showPeopleAvailable(responseJson));
 };
 
-function fetchMasterSearch(masterSearchUrlString) {
-    const options = {
-        headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
-        })
-    };
-    fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson.results.length) {
-                fetchMovieDetails(responseJson);
-            } else {
-                noResultsFound();
-            };
-        });
+function displayLoadMoreResultsButton() {
+    $("main .fetch-more-films-button").html('<button type="button" name="find-more-films">Find more films</button>');
 };
 
-function noResultsFound() {
-    $("main .form").empty();
-    $("main .fetch-more-films-button").empty();
-    $("main .results").append(`Sorry, no films available to display. Try a new search.`);
+function displayNewSearchButton() {
+    $("main .new-search-button").html('<button type="button" name="start-new-search">New Search</button>');
+};
+
+function displaySearchResults(responseJson) {
+    const imdbId = responseJson.imdbID;
+    const poster = responseJson.Poster.toUpperCase().trim() === 'N/A' ? 'poster_not_available.png' : responseJson.Poster;
+    console.log(responseJson);
     displayNewSearchButton();
+
+    $("main .results").append(`
+            <div class="container">
+                <img src="${poster}" alt="${responseJson.Title} poster.">
+            <div class="bottom-left">
+                <h3>${responseJson.Title}</h3>
+                <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button." class="more-button"></a>
+            </div>
+            <div id="${imdbId}" class="modal">
+                <img src="${poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
+                <section class="title_and_score">
+                <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
+                </section>
+                <p>${responseJson.Plot}</p>
+                <p>Released: ${responseJson.Year}</p>
+                <p>Genre: ${responseJson.Genre}</p>
+                <p>Director: ${responseJson.Director}</p>
+                <p>Actors: ${responseJson.Actors}</p>
+                <p>Rated: ${responseJson.Rated}</p>
+            </div>
+            </div>`);
+};
+
+function fetchFilmDetailsFromImdb(imdbId) {
+    const imdbOptions = {
+        headers: new Headers({
+            'X-RapidAPI-Key': "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
+        })
+    };
+    fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
+        .then((response) => response.json())
+        .then((responseJson) => displaySearchResults(responseJson));
 };
 
 function fetchMovieDetails(responseJson) {
@@ -174,15 +227,28 @@ function fetchMovieDetails(responseJson) {
     };
 };
 
-function fetchFilmDetailsFromImdb(imdbId) {
-    const imdbOptions = {
+function noResultsFound() {
+    $("main .form").empty();
+    $("main .fetch-more-films-button").empty();
+    $("main .results").append(`Sorry, no films available to display. Try a new search.`);
+    displayNewSearchButton();
+};
+
+function fetchMasterSearch(masterSearchUrlString) {
+    const options = {
         headers: new Headers({
-            'X-RapidAPI-Key': "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
+            'Authorization': `Bearer ${tmdbToken}`
         })
     };
-    fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
+    fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
-        .then((responseJson) => displaySearchResults(responseJson));
+        .then((responseJson) => {
+            if (responseJson.results.length) {
+                fetchMovieDetails(responseJson);
+            } else {
+                noResultsFound();
+            };
+        });
 };
 
 function runKeywordSearch() {
@@ -204,36 +270,6 @@ function runPeopleSearch() {
         const value = $(".with-people-input").val();
         fetchWithPeople(value);
     });
-};
-
-function showWithKeywordResults(responseJson) {
-    $(".with-keyword-results").append(`<h2>Select your keywords to include:</h2>
-        <form>`);
-    for (let i = 0; i < responseJson.results.length; i++) {
-        $(".with-keyword-results").append(`
-                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
-                `)
-    };
-    $(".with-keyword-results").append(`</form>`);
-};
-
-function showWithoutKeywordResults(responseJson) {
-    $(".without-keyword-results").append(`<h2>Select your keywords to exclude:</h2>
-        <form>`);
-    for (let i = 0; i < responseJson.results.length; i++) {
-        $(".without-keyword-results").append(`
-                <input type="checkbox" name="without-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
-                `);
-    };
-    $(".without-keyword-results").append(`</form>`);
-};
-
-function showPeopleAvailable(responseJson) {
-    $(".people-results").append(`<form>`);
-    for (let i = 0; i < responseJson.results.length; i++) {
-        $(".people-results").append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`);
-    };
-    $(".people-results").append(`</form>`);
 };
 
 function setWithKeywords() {
@@ -302,47 +338,11 @@ function runMasterSearch() {
     });
 };
 
-function displaySearchResults(responseJson) {
-    const imdbId = responseJson.imdbID;
-    const poster = responseJson.Poster.toUpperCase().trim() === 'N/A' ? 'poster_not_available.png' : responseJson.Poster;
-    console.log(responseJson);
-    displayNewSearchButton();
-
-    $("main .results").append(`
-            <div class="container">
-                <img src="${poster}" alt="${responseJson.Title} poster.">
-            <div class="bottom-left">
-                <h3>${responseJson.Title}</h3>
-                <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button." class="more-button"></a>
-            </div>
-            <div id="${imdbId}" class="modal">
-                <img src="${poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
-                <section class="title_and_score">
-                <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
-                </section>
-                <p>${responseJson.Plot}</p>
-                <p>Released: ${responseJson.Year}</p>
-                <p>Genre: ${responseJson.Genre}</p>
-                <p>Director: ${responseJson.Director}</p>
-                <p>Actors: ${responseJson.Actors}</p>
-                <p>Rated: ${responseJson.Rated}</p>
-            </div>
-            </div>`);
-};
-
 function fetchMoreFilms() {
     $("main .fetch-more-films-button").on('click', 'button[name=find-more-films]', (event) => {
         SEARCH.page += 1;
         $("main .form").append(generateMasterSearchUrlString());
     });
-};
-
-function displayLoadMoreResultsButton() {
-    $("main .fetch-more-films-button").html('<button type="button" name="find-more-films">Find more films</button>');
-};
-
-function displayNewSearchButton() {
-    $("main .new-search-button").html('<button type="button" name="start-new-search">New Search</button>');
 };
 
 function startNewSearch() {
