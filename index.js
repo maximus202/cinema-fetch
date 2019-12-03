@@ -15,7 +15,7 @@ const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 function generateSearchForm() {
     return `
         <h1>The search engine for cinephiles! Find similar films to the ones you love with highly-targeted searches. Try it below!</h1>
-            <button class="with-keyword-toggle">Hide/Show</button>
+            <button class="with-keyword-toggle">Hide/Show Keywords to Include</button>
                 <form class="with-keyword">
                     <fieldset class="with-keyword">
                         <legend>Keywords to include</legend>
@@ -23,10 +23,11 @@ function generateSearchForm() {
                         <input type="text" name="value" class="with-keyword-input" placeholder="Enter your keyword here.">
                         <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find keywords to include">
                         <div class="with-keyword-results">
+                        <div class="error-message"></div>
                         </div>
                     </fieldset>
                 </form>
-            <button class="without-keyword-toggle">Hide/Show</button>
+            <button class="without-keyword-toggle">Hide/Show Keywords to Exclude</button>
                 <form class="without-keyword">
                     <fieldset class="without-keyword">
                         <legend>Keywords to exclude</legend>
@@ -34,10 +35,11 @@ function generateSearchForm() {
                         <input type="text" name="value" class="without-keyword-input" placeholder="Enter your keyword here.">
                         <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find keywords to exclude">
                         <div class="without-keyword-results">
+                        <div class="error-message"></div>
                         </div>
                     </fieldset>
                 </form>
-            <button class="release-year-toggle">Hide/Show</button>
+            <button class="release-year-toggle">Hide/Show Release Time Frame</button>
                 <form class="release-year">
                     <fieldset>
                         <legend>Release Year</legend>
@@ -48,7 +50,7 @@ function generateSearchForm() {
                         <input type="date" name="end-release-year" class="end-release-year">
                     </fieldset>
                 </form>
-            <button class="with-people-toggle">Hide/Show</button>
+            <button class="with-people-toggle">Hide/Show Cast and Crew to include</button>
                 <form class="with-people">
                     <fieldset class="with-people">
                         <legend>Cast/Crew</legend>
@@ -56,6 +58,7 @@ function generateSearchForm() {
                         <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
                         <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find people">
                         <div class="people-results">
+                        <div class="error-message"></div>
                         </div>
                     </fieldset>
                 </form>
@@ -113,7 +116,14 @@ function showWithKeywordResults(responseJson) {
     $(".with-keyword-results").append("</form>");
 };
 
+function searchFilterNotFound() {
+    $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
+    $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
+    $(".people-results .error-message").html("No people found. Please try a different name.");
+};
+
 function fetchWithKeywordData(value) {
+    $(".with-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -121,7 +131,13 @@ function fetchWithKeywordData(value) {
     };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then((response) => response.json())
-        .then((responseJson) => showWithKeywordResults(responseJson));
+        .then((responseJson) => {
+            if (responseJson.results.length) {
+                showWithKeywordResults(responseJson);
+            } else {
+                searchFilterNotFound();
+            };
+        });
 };
 
 function showWithoutKeywordResults(responseJson) {
@@ -136,6 +152,7 @@ function showWithoutKeywordResults(responseJson) {
 };
 
 function fetchWithoutKeywordData(value) {
+    $(".without-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -143,11 +160,17 @@ function fetchWithoutKeywordData(value) {
     };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then((response) => response.json())
-        .then((responseJson) => showWithoutKeywordResults(responseJson));
+        .then((responseJson) => {
+            if (responseJson.results.length) {
+                showWithoutKeywordResults(responseJson);
+            } else {
+                searchFilterNotFound();
+            };
+        });
 };
 
 function showPeopleAvailable(responseJson) {
-    $(".people-results").append("<form>");
+    $(".people-results").append("<h2>Select the cast/crew names you want to include:</h2><form>");
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".people-results").append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`);
     };
@@ -155,6 +178,7 @@ function showPeopleAvailable(responseJson) {
 };
 
 function fetchWithPeople(value) {
+    $(".people-results .error-message").empty();
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -162,7 +186,13 @@ function fetchWithPeople(value) {
     };
     fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
         .then((response) => response.json())
-        .then((responseJson) => showPeopleAvailable(responseJson));
+        .then((responseJson) => {
+            if (responseJson.results.length) {
+                showPeopleAvailable(responseJson);
+            } else {
+                searchFilterNotFound();
+            };
+        });
 };
 
 function displayLoadMoreResultsButton() {
