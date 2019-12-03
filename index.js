@@ -14,66 +14,91 @@ const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 
 function generateSearchForm() {
     return `
-        <h1>Find hidden-gems to watch, with precision.</h1>
-        <h2>Use the form below to find your next watch!</h2>
-        <form>
-            <fieldset class="with-keyword">
-                <legend>Step 1: Keywords to include</legend>
-                <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Simply provide a keyword in the box below and click "Submit" to search for available keywords.</p>
-                <input type="text" name="value" class="with-keyword-input" placeholder="Enter your keyword here.">
-                <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find keywords to include">
-                <div class="with-keyword-results">
-                </div>
-            </fieldset>
-        </form>
-        <form>
-            <fieldset class="without-keyword">
-                <legend>Step 2: Keywords to exclude</legend>
-                <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement here. Use the box below to provide keywords you want to EXCLUDE in your search.</p>
-                <input type="text" name="value" class="without-keyword-input" placeholder="Enter your keyword here.">
-                <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find keywords to exclude">
-                <div class="without-keyword-results">
-                </div>
-            </fieldset>
-        </form>
-        <form>
-            <fieldset>
-                <legend>Step 3: Release Year</legend>
-                <p>Feelin' nostalgic? You can use this date range feature to search for films in a specific time frame.</p>
-                Provide a start date:
-                <input type="date" name="start-release-year" class="start-release-year">
-                Provide an end date:
-                <input type="date" name="end-release-year" class="end-release-year">
-            </fieldset>
-        </form>
-        <form>
-            <fieldset class="with-people">
-                <legend>Step 4: Cast/Crew</legend>
-                <p>Fan of Tim Burton's eccentric style or Quentin Tarantino's... well, there's no word for Tarantino's style. You can use this feature to find movies with styles similar to your favorite director/writer/actor/whoever.</p>
-                <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
-                <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find people">
-                <div class="people-results">
-                </div>
-            </fieldset>
-        </form>
-        <form>
-            <fieldset class="sort-by">
-                <legend>Step 5: Sort by</legend>
-                <p>Now for the cherry on top. How would you like to display your results?</p>
-                <select name="sort-by">
-                    <option value="popularity.desc">Most Popular</option>
-                    <option value="popularity.asc">Least Popular</option>
-                    <option value="release_date.desc">Release Date (Newest)</option>
-                    <option value="release_date.asc">Release Date (Oldest)</option>
-                    <option value="vote_average.desc">Highest Votes</option>
-                    <option value="vote_average.asc">Lowest Votes</option>
-                </select>
-            </fieldset>
-        </form>
-            <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
+        <h1>The search engine for cinephiles! Find similar films to the ones you love with highly-targeted searches. Try it below!</h1>
+            <button class="with-keyword-toggle">Hide/Show</button>
+                <form class="with-keyword">
+                    <fieldset class="with-keyword">
+                        <legend>Keywords to include</legend>
+                        <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Simply provide a keyword in the box below and click "Submit" to search for available keywords.</p>
+                        <input type="text" name="value" class="with-keyword-input" placeholder="Enter your keyword here.">
+                        <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find keywords to include">
+                        <div class="with-keyword-results">
+                        </div>
+                    </fieldset>
+                </form>
+            <button class="without-keyword-toggle">Hide/Show</button>
+                <form class="without-keyword">
+                    <fieldset class="without-keyword">
+                        <legend>Keywords to exclude</legend>
+                        <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement here. Use the box below to provide keywords you want to EXCLUDE in your search.</p>
+                        <input type="text" name="value" class="without-keyword-input" placeholder="Enter your keyword here.">
+                        <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find keywords to exclude">
+                        <div class="without-keyword-results">
+                        </div>
+                    </fieldset>
+                </form>
+            <button class="release-year-toggle">Hide/Show</button>
+                <form class="release-year">
+                    <fieldset>
+                        <legend>Release Year</legend>
+                        <p>Feelin' nostalgic? You can use this date range feature to search for films in a specific time frame.</p>
+                        Provide a start date:
+                        <input type="date" name="start-release-year" class="start-release-year">
+                        Provide an end date:
+                        <input type="date" name="end-release-year" class="end-release-year">
+                    </fieldset>
+                </form>
+            <button class="with-people-toggle">Hide/Show</button>
+                <form class="with-people">
+                    <fieldset class="with-people">
+                        <legend>Cast/Crew</legend>
+                        <p>Fan of Tim Burton's eccentric style or Quentin Tarantino's... well, there's no word for Tarantino's style. You can use this feature to find movies with styles similar to your favorite director/writer/actor/whoever.</p>
+                        <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
+                        <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find people">
+                        <div class="people-results">
+                        </div>
+                    </fieldset>
+                </form>
+            <form>
+                <fieldset class="sort-by">
+                    <legend>Sort by</legend>
+                    <p>Now for the cherry on top. How would you like to display your results?</p>
+                    <select name="sort-by">
+                        <option value="popularity.desc">Most Popular</option>
+                        <option value="popularity.asc">Least Popular</option>
+                        <option value="release_date.desc">Release Date (Newest)</option>
+                        <option value="release_date.asc">Release Date (Oldest)</option>
+                        <option value="vote_average.desc">Highest Votes</option>
+                        <option value="vote_average.asc">Lowest Votes</option>
+                    </select>
+                </fieldset>
+            </form>
+        <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
 };
 
-function displaySearchForm() {
+function hideFiltersOnLoad() {
+    $("form.with-keyword").toggle();
+    $("form.without-keyword").toggle();
+    $("form.release-year").toggle();
+    $("form.with-people").toggle();
+};
+
+function toggleHideAndShowFilters() {
+    $("button.with-keyword-toggle").click(function () {
+        $("form.with-keyword").toggle();
+    });
+    $("button.without-keyword-toggle").click(function () {
+        $("form.without-keyword").toggle();
+    });
+    $("button.release-year-toggle").click(function () {
+        $("form.release-year").toggle();
+    });
+    $("button.with-people-toggle").click(function () {
+        $("form.with-people").toggle();
+    })
+};
+
+function displaySearchFilters() {
     $('main .form').html(generateSearchForm());
 };
 
@@ -118,13 +143,20 @@ function fetchMasterSearch(masterSearchUrlString) {
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
-        .then((responseJson) => fetchMovieDetails(responseJson));
+        .then((responseJson) => { if (responseJson.results.length) { fetchMovieDetails(responseJson) } else { noResultsFound() } });
+};
+
+function noResultsFound() {
+    $('main .form').empty();
+    $('main .fetch-more-films-button').empty();
+    $('main .results').append(`Sorry, no films available to display. Try a new search.`);
+    displayNewSearchButton();
 };
 
 function fetchMovieDetails(responseJson) {
     $('main .form').empty();
-    $('main .actions').html('<button type="button" name="start-new-search">Start New Search</button> <button type="button" name="load-more-results">Load More Results</button>');
     for (let i = 0; i < responseJson.results.length; i++) {
+        displayLoadMoreResultsButton();
         const options = {
             headers: new Headers({
                 'Authorization': `Bearer ${tmdbToken}`
@@ -266,15 +298,19 @@ function runMasterSearch() {
 
 function displaySearchResults(responseJson) {
     const imdbId = responseJson.imdbID;
+    const poster = responseJson.Poster.toUpperCase().trim() === 'N/A' ? 'poster_not_available.png' : responseJson.Poster;
+    console.log(responseJson);
+    displayNewSearchButton();
+
     $('main .results').append(`
             <div class="container">
-                <img src="${responseJson.Poster}" alt="${responseJson.Title} poster.">
+                <img src="${poster}" alt="${responseJson.Title} poster.">
             <div class="bottom-left">
                 <h3>${responseJson.Title}</h3>
                 <a href="#${imdbId}" rel="modal:open"><img src="more.png" alt="More button." class="more-button"></a>
             </div>
             <div id="${imdbId}" class="modal">
-                <img src="${responseJson.Poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
+                <img src="${poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
                 <section class="title_and_score">
                 <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
                 </section>
@@ -288,21 +324,31 @@ function displaySearchResults(responseJson) {
             </div>`);
 };
 
-function startNewSearch() {
-    $('main .actions').on('click', 'button[name=start-new-search]', (event) => {
-        location.reload();
-    });
-};
-
-function loadMoreResults() {
-    $('main .actions').on('click', 'button[name=load-more-results]', (event) => {
+function fetchMoreFilms() {
+    $('main .fetch-more-films-button').on('click', 'button[name=find-more-films]', (event) => {
         SEARCH.page += 1;
         $('main .form').append(generateMasterSearchUrlString());
     });
 };
 
+function displayLoadMoreResultsButton() {
+    $('main .fetch-more-films-button').html('<button type="button" name="find-more-films">Find more films</button>');
+};
+
+function displayNewSearchButton() {
+    $('main .new-search-button').html('<button type="button" name="start-new-search">New Search</button>');
+};
+
+function startNewSearch() {
+    $('main .new-search-button').on('click', 'button[name=start-new-search]', (event) => {
+        location.reload();
+    });
+};
+
 $(function () {
-    displaySearchForm();
+    displaySearchFilters();
+    hideFiltersOnLoad()
+    toggleHideAndShowFilters();
     runKeywordSearch();
     runPeopleSearch();
     setWithKeywords();
@@ -311,6 +357,6 @@ $(function () {
     setSortBy();
     setWithoutKeywords();
     runMasterSearch();
+    fetchMoreFilms();
     startNewSearch();
-    loadMoreResults();
 });
