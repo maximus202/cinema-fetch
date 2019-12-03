@@ -102,6 +102,17 @@ function displaySearchFilters() {
     $('main .form').html(generateSearchForm());
 };
 
+function showWithKeywordResults(responseJson) {
+    $('.with-keyword-results').append(`<h2>Select your keywords to include:</h2>
+        <form>`);
+    for (let i = 0; i < responseJson.results.length; i++) {
+        $('.with-keyword-results').append(`
+                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                `)
+    };
+    $('.with-keyword-results').append(`</form>`);
+};
+
 function fetchWithKeywordData(value) {
     const options = {
         headers: new Headers({
@@ -124,7 +135,20 @@ function fetchWithoutKeywordData(value) {
         .then((responseJson) => showWithoutKeywordResults(responseJson));
 };
 
-function fetchWithPeople(value) {
+function listenForKeywordSearch() {
+    $('main .form').on('click', '.with-keyword-submit-button', (event) => {
+        event.preventDefault();
+        const value = $('.with-keyword-input').val();
+        fetchWithKeywordData(value);
+    });
+    $('main .form').on('click', '.without-keyword-submit-button', (event) => {
+        event.preventDefault();
+        const value = $('.without-keyword-input').val();
+        fetchWithoutKeywordData(value);
+    });
+};
+
+function fetchWithPeopleDate(value) {
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -135,7 +159,15 @@ function fetchWithPeople(value) {
         .then((responseJson) => showPeopleAvailable(responseJson));
 };
 
-function fetchMasterSearch(masterSearchUrlString) {
+function listenForPeopleSearch() {
+    $('main .form').on('click', '.with-people-submit-button', (event) => {
+        event.preventDefault();
+        const value = $('.with-people-input').val();
+        fetchWithPeopleData(value);
+    });
+};
+
+function fetchDiscoverData(masterSearchUrlString) {
     const options = {
         headers: new Headers({
             'Authorization': `Bearer ${tmdbToken}`
@@ -143,17 +175,17 @@ function fetchMasterSearch(masterSearchUrlString) {
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
-        .then((responseJson) => { if (responseJson.results.length) { fetchMovieDetails(responseJson) } else { noResultsFound() } });
+        .then((responseJson) => { if (responseJson.results.length) { fetchImdbId(responseJson) } else { noDiscoverResultsFound() } });
 };
 
-function noResultsFound() {
+function noDiscoverResultsFound() {
     $('main .form').empty();
     $('main .fetch-more-films-button').empty();
     $('main .results').append(`Sorry, no films available to display. Try a new search.`);
     displayNewSearchButton();
 };
 
-function fetchMovieDetails(responseJson) {
+function fetchImdbId(responseJson) {
     $('main .form').empty();
     for (let i = 0; i < responseJson.results.length; i++) {
         displayLoadMoreResultsButton();
@@ -176,39 +208,7 @@ function fetchFilmDetailsFromImdb(imdbId) {
     };
     fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
         .then((response) => response.json())
-        .then((responseJson) => displaySearchResults(responseJson));
-};
-
-function runKeywordSearch() {
-    $('main .form').on('click', '.with-keyword-submit-button', (event) => {
-        event.preventDefault();
-        const value = $('.with-keyword-input').val();
-        fetchWithKeywordData(value);
-    });
-    $('main .form').on('click', '.without-keyword-submit-button', (event) => {
-        event.preventDefault();
-        const value = $('.without-keyword-input').val();
-        fetchWithoutKeywordData(value);
-    });
-};
-
-function runPeopleSearch() {
-    $('main .form').on('click', '.with-people-submit-button', (event) => {
-        event.preventDefault();
-        const value = $('.with-people-input').val();
-        fetchWithPeople(value);
-    });
-};
-
-function showWithKeywordResults(responseJson) {
-    $('.with-keyword-results').append(`<h2>Select your keywords to include:</h2>
-        <form>`);
-    for (let i = 0; i < responseJson.results.length; i++) {
-        $('.with-keyword-results').append(`
-                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
-                `)
-    };
-    $('.with-keyword-results').append(`</form>`);
+        .then((responseJson) => displayImdbData(responseJson));
 };
 
 function showWithoutKeywordResults(responseJson) {
@@ -286,7 +286,7 @@ function generateMasterSearchUrlString() {
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
     const withPeople = SEARCH.withPeople.join("|");
     const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords=${withoutKeywords}&primary_release_date.gte=${SEARCH.primaryReleaseDateStart}&primary_release_date.lte=${SEARCH.primaryReleaseDateEnd}&with_people=${withPeople}&sort_by=${SEARCH.sortBy}&page=${SEARCH.page}`;
-    fetchMasterSearch(masterSearchUrlString);
+    fetchDiscoverData(masterSearchUrlString);
 };
 
 function runMasterSearch() {
@@ -296,7 +296,7 @@ function runMasterSearch() {
     });
 };
 
-function displaySearchResults(responseJson) {
+function displayImdbData(responseJson) {
     const imdbId = responseJson.imdbID;
     const poster = responseJson.Poster.toUpperCase().trim() === 'N/A' ? 'poster_not_available.png' : responseJson.Poster;
     console.log(responseJson);
@@ -349,8 +349,8 @@ $(function () {
     displaySearchFilters();
     hideFiltersOnLoad()
     toggleHideAndShowFilters();
-    runKeywordSearch();
-    runPeopleSearch();
+    listenForKeywordSearch();
+    listenForPeopleSearch();
     setWithKeywords();
     setReleaseYear();
     setPeople();
