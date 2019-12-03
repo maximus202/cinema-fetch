@@ -2,6 +2,14 @@
     box-sizing: border-box;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+p {
+    font-family: 'Lato', sans-serif;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -27,14 +35,6 @@ main {
 
 form {
     width: 100%;
-}
-
-#myDIV {
-  width: 100%;
-  padding: 50px 0;
-  text-align: center;
-  background-color: lightblue;
-  margin-top: 20px;
 }
 
 div.results {
