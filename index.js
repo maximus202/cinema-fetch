@@ -108,9 +108,9 @@ function showWithKeywordResults(responseJson) {
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
                 <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
-                `)
+                `);
     };
-    $(".with-keyword-results").append(`</form>`);
+    $(".with-keyword-results").append("</form>");
 };
 
 function fetchWithKeywordData(value) {
@@ -132,7 +132,7 @@ function showWithoutKeywordResults(responseJson) {
                 <input type="checkbox" name="without-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
                 `);
     };
-    $(".without-keyword-results").append(`</form>`);
+    $(".without-keyword-results").append("</form>");
 };
 
 function fetchWithoutKeywordData(value) {
@@ -147,11 +147,11 @@ function fetchWithoutKeywordData(value) {
 };
 
 function showPeopleAvailable(responseJson) {
-    $(".people-results").append(`<form>`);
+    $(".people-results").append("<form>");
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".people-results").append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`);
     };
-    $(".people-results").append(`</form>`);
+    $(".people-results").append("</form>");
 };
 
 function fetchWithPeople(value) {
@@ -166,17 +166,16 @@ function fetchWithPeople(value) {
 };
 
 function displayLoadMoreResultsButton() {
-    $("main .fetch-more-films-button").html('<button type="button" name="find-more-films">Find more films</button>');
+    $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>");
 };
 
 function displayNewSearchButton() {
-    $("main .new-search-button").html('<button type="button" name="start-new-search">New Search</button>');
+    $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>");
 };
 
 function displaySearchResults(responseJson) {
     const imdbId = responseJson.imdbID;
-    const poster = responseJson.Poster.toUpperCase().trim() === 'N/A' ? 'poster_not_available.png' : responseJson.Poster;
-    console.log(responseJson);
+    const poster = responseJson.Poster.toUpperCase().trim() === "N/A" ? "poster_not_available.png" : responseJson.Poster;
     displayNewSearchButton();
 
     $("main .results").append(`
@@ -204,7 +203,7 @@ function displaySearchResults(responseJson) {
 function fetchFilmDetailsFromImdb(imdbId) {
     const imdbOptions = {
         headers: new Headers({
-            'X-RapidAPI-Key': "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
+            "X-RapidAPI-Key": "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
         })
     };
     fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
@@ -237,7 +236,7 @@ function noResultsFound() {
 function fetchMasterSearch(masterSearchUrlString) {
     const options = {
         headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
+            "Authorization": `Bearer ${tmdbToken}`
         })
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
@@ -252,12 +251,12 @@ function fetchMasterSearch(masterSearchUrlString) {
 };
 
 function runKeywordSearch() {
-    $("main .form").on('click', '.with-keyword-submit-button', (event) => {
+    $("main .form").on("click", ".with-keyword-submit-button", (event) => {
         event.preventDefault();
         const value = $(".with-keyword-input").val();
         fetchWithKeywordData(value);
     });
-    $("main .form").on('click', '.without-keyword-submit-button', (event) => {
+    $("main .form").on("click", ".without-keyword-submit-button", (event) => {
         event.preventDefault();
         const value = $(".without-keyword-input").val();
         fetchWithoutKeywordData(value);
@@ -265,7 +264,7 @@ function runKeywordSearch() {
 };
 
 function runPeopleSearch() {
-    $('main .form').on('click', '.with-people-submit-button', (event) => {
+    $("main .form").on("click", ".with-people-submit-button", (event) => {
         event.preventDefault();
         const value = $(".with-people-input").val();
         fetchWithPeople(value);
@@ -273,8 +272,8 @@ function runPeopleSearch() {
 };
 
 function setWithKeywords() {
-    $("main .form").on('change', 'input[name=with-keyword]', (event) => {
-        const checkedBoxes = $('input[name=with-keyword]:checked');
+    $("main .form").on("change", "input[name=with-keyword]", (event) => {
+        const checkedBoxes = $("input[name=with-keyword]:checked");
         const keywordIds = [];
         for (let i = 0; i < checkedBoxes.length; i++) {
             keywordIds.push(checkedBoxes[i].value);
@@ -284,8 +283,8 @@ function setWithKeywords() {
 };
 
 function setWithoutKeywords() {
-    $("main .form").on('change', 'input[name=without-keyword]', (event) => {
-        const checkedBoxes = $('input[name=without-keyword]:checked');
+    $("main .form").on("change", "input[name=without-keyword]", (event) => {
+        const checkedBoxes = $("input[name=without-keyword]:checked");
         const keywordIds = [];
         for (let i = 0; i < checkedBoxes.length; i++) {
             keywordIds.push(checkedBoxes[i].value);
@@ -295,19 +294,19 @@ function setWithoutKeywords() {
 };
 
 function setReleaseYear() {
-    $("main .form").on('change', 'input[name=start-release-year]', (event) => {
-        const startReleaseYear = $('input[name=start-release-year]').val();
+    $("main .form").on("change", "input[name=start-release-year]", (event) => {
+        const startReleaseYear = $("input[name=start-release-year]").val();
         SEARCH.primaryReleaseDateStart = startReleaseYear;
     });
-    $("main .form").on('change', 'input[name=end-release-year]', (event) => {
+    $("main .form").on("change", "input[name=end-release-year]", (event) => {
         const endReleaseYear = $("input[name=end-release-year]").val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
     });
 };
 
 function setPeople() {
-    $("main .form").on('change', 'input[name=with-people]', (event) => {
-        const people = $('input[name=with-people]:checked');
+    $("main .form").on("change", "input[name=with-people]", (event) => {
+        const people = $("input[name=with-people]:checked");
         const peopleIds = [];
         for (let i = 0; i < people.length; i++) {
             peopleIds.push(people[i].value);
@@ -317,10 +316,10 @@ function setPeople() {
 };
 
 function setSortBy() {
-    $("main .form").on('change', 'select[name=sort-by]', (event) => {
+    $("main .form").on("change", "select[name=sort-by]", (event) => {
         const sortBy = $("select[name=sort-by]").val();
         SEARCH.sortBy = sortBy;
-    })
+    });
 };
 
 function generateMasterSearchUrlString() {
@@ -332,28 +331,28 @@ function generateMasterSearchUrlString() {
 };
 
 function runMasterSearch() {
-    $("main .form").on('click', '.master-search-submit-button', (event) => {
+    $("main .form").on("click", ".master-search-submit-button", (event) => {
         event.preventDefault();
         generateMasterSearchUrlString();
     });
 };
 
 function fetchMoreFilms() {
-    $("main .fetch-more-films-button").on('click', 'button[name=find-more-films]', (event) => {
+    $("main .fetch-more-films-button").on("click", "button[name=find-more-films]", (event) => {
         SEARCH.page += 1;
         $("main .form").append(generateMasterSearchUrlString());
     });
 };
 
 function startNewSearch() {
-    $("main .new-search-button").on('click', 'button[name=start-new-search]', (event) => {
+    $("main .new-search-button").on("click", "button[name=start-new-search]", (event) => {
         location.reload();
     });
-};
+}
 
 $(function () {
     displaySearchForm();
-    hideFiltersOnLoad()
+    hideFiltersOnLoad();
     toggleHideAndShowFilters();
     runKeywordSearch();
     runPeopleSearch();
