@@ -98,7 +98,7 @@ function toggleHideAndShowFilters() {
     });
     $("button.with-people-toggle").click(function () {
         $("form.with-people").toggle();
-    })
+    });
 };
 
 function displaySearchForm() {
@@ -126,7 +126,7 @@ function fetchWithKeywordData(value) {
     $(".with-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
+            "Authorization": `Bearer ${tmdbToken}`
         })
     };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
@@ -259,7 +259,7 @@ function fetchMovieDetails(responseJson) {
 function noResultsFound() {
     $("main .form").empty();
     $("main .fetch-more-films-button").empty();
-    $("main .results").append(`Sorry, no films available to display. Try a new search.`);
+    $("main .results").append("Sorry, no films available to display. Try a new search.");
     displayNewSearchButton();
 };
 
