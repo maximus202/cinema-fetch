@@ -14,7 +14,6 @@ const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 
 function generateSearchForm() {
     return `
-        <h1>The search engine for cinephiles! Find similar films to the ones you love with highly-targeted searches. Try it below!</h1>
             <button class="with-keyword-toggle">Hide/Show Keywords to Include</button>
                 <form class="with-keyword">
                     <fieldset class="with-keyword">
