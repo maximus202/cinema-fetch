@@ -14,48 +14,59 @@ const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 
 function generateSearchForm() {
     return `
-            <button class="with-keyword-toggle">Hide/Show Keywords to Include</button>
+    <div class="intro">
+            <p>Start a fetch</p>
+        </div>
+            <button class="with-keyword-toggle"><img src="target.png" alt="Keywords to include icon.">
+            <h3>Keywords to include</h3>
+            <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Add keywords to filter your search.</p>
+            </button>
                 <form class="with-keyword">
                     <fieldset class="with-keyword">
                         <legend>Keywords to include</legend>
-                        <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Simply provide a keyword in the box below and click "Submit" to search for available keywords.</p>
-                        <input type="text" name="value" class="with-keyword-input" placeholder="Enter your keyword here.">
-                        <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find keywords to include">
+                        <input type="text" name="value" class="with-keyword-input" placeholder="Add keyword...">
+                        <input type="submit" name="run-search" class="with-keyword-submit-button" value="Find &rarr;">
                         <div class="with-keyword-results">
                         <div class="error-message"></div>
                         </div>
                     </fieldset>
                 </form>
-            <button class="without-keyword-toggle">Hide/Show Keywords to Exclude</button>
+            <button class="without-keyword-toggle"><img src="eraser.png" alt="Keywords to exclude icon.">
+            <h3>Keywords to exclude</h3>
+            <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement. Add keywords to exclude from your search.</p>
+            </button>
                 <form class="without-keyword">
                     <fieldset class="without-keyword">
                         <legend>Keywords to exclude</legend>
-                        <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement here. Use the box below to provide keywords you want to EXCLUDE in your search.</p>
-                        <input type="text" name="value" class="without-keyword-input" placeholder="Enter your keyword here.">
-                        <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find keywords to exclude">
+                        <input type="text" name="value" class="without-keyword-input" placeholder="Add keyword...">
+                        <input type="submit" name="run-search" class="without-keyword-submit-button" value="Find &rarr;">
                         <div class="without-keyword-results">
                         <div class="error-message"></div>
                         </div>
                     </fieldset>
                 </form>
-            <button class="release-year-toggle">Hide/Show Release Time Frame</button>
+            <button class="release-year-toggle"><img src="calendar.png" alt="Release date icon.">
+            <h3>Release Date</h3>
+            <p>Feelin' nostalgic? Use this release date filter to target films released in a specific date range.</p>
+            </button>
                 <form class="release-year">
                     <fieldset>
                         <legend>Release Year</legend>
-                        <p>Feelin' nostalgic? You can use this date range feature to search for films in a specific time frame.</p>
-                        Provide a start date:
+                        <h3>Start date:</h3>
                         <input type="date" name="start-release-year" class="start-release-year">
-                        Provide an end date:
+                        <h3>End date:</h3>
                         <input type="date" name="end-release-year" class="end-release-year">
                     </fieldset>
                 </form>
-            <button class="with-people-toggle">Hide/Show Cast and Crew to include</button>
+            <button class="with-people-toggle"><img src="network.png" alt="Cast and crew icon.">
+            <h3>Cast and Crew</h3>
+            <p>Fan of Tim Burton's eccentric style or Tarantino's colorful dialogue? Add your chosen cast and crew members to filter movies similar to their styles.</p>
+            </button>
                 <form class="with-people">
                     <fieldset class="with-people">
                         <legend>Cast/Crew</legend>
-                        <p>Fan of Tim Burton's eccentric style or Quentin Tarantino's... well, there's no word for Tarantino's style. You can use this feature to find movies with styles similar to your favorite director/writer/actor/whoever.</p>
-                        <input type="text" name="with-people-input" class="with-people-input" placeholder="Ex: David Fincher">
-                        <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find people">
+                        <input type="text" name="with-people-input" class="with-people-input" placeholder="Add name...">
+                        <input type="submit" name="run-with-people-search" class="with-people-submit-button" value="Find &rarr;">
                         <div class="people-results">
                         <div class="error-message"></div>
                         </div>
@@ -64,7 +75,7 @@ function generateSearchForm() {
             <form>
                 <fieldset class="sort-by">
                     <legend>Sort by</legend>
-                    <p>Now for the cherry on top. How would you like to display your results?</p>
+                    <h3>Sort by:</h3>
                     <select name="sort-by">
                         <option value="popularity.desc">Most Popular</option>
                         <option value="popularity.asc">Least Popular</option>
@@ -105,7 +116,7 @@ function displaySearchForm() {
 };
 
 function showWithKeywordResults(responseJson) {
-    $(".with-keyword-results").append(`<h2>Select your keywords to include:</h2>
+    $(".with-keyword-results").append(`
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
@@ -140,7 +151,7 @@ function fetchWithKeywordData(value) {
 };
 
 function showWithoutKeywordResults(responseJson) {
-    $(".without-keyword-results").append(`<h2>Select your keywords to exclude:</h2>
+    $(".without-keyword-results").append(`
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".without-keyword-results").append(`
@@ -169,9 +180,9 @@ function fetchWithoutKeywordData(value) {
 };
 
 function showPeopleAvailable(responseJson) {
-    $(".people-results").append("<h2>Select the cast/crew names you want to include:</h2><form>");
+    $(".people-results").append("<form>");
     for (let i = 0; i < responseJson.results.length; i++) {
-        $(".people-results").append(`<input type="checkbox" name="with-people" value="${responseJson.results[i].id}">${responseJson.results[i].name}`);
+        $(".people-results").append(`<input id="${responseJson.results[i].id}" type="checkbox" name="with-people" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>`);
     };
     $(".people-results").append("</form>");
 };
