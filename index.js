@@ -120,7 +120,7 @@ function showWithKeywordResults(responseJson) {
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
-                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                <input id="${responseJson.results[i].id}" type="checkbox" name="with-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
                 `);
     };
     $(".with-keyword-results").append("</form>");
@@ -155,7 +155,7 @@ function showWithoutKeywordResults(responseJson) {
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".without-keyword-results").append(`
-                <input type="checkbox" name="without-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                <input id="${responseJson.results[i].id}" type="checkbox" name="without-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
                 `);
     };
     $(".without-keyword-results").append("</form>");
@@ -217,7 +217,6 @@ function displaySearchResults(responseJson) {
     const imdbId = responseJson.imdbID;
     const poster = responseJson.Poster.toUpperCase().trim() === "N/A" ? "poster_not_available.png" : responseJson.Poster;
     displayNewSearchButton();
-
     $("main .results").append(`
             <div class="container">
                 <img src="${poster}" alt="${responseJson.Title} poster.">
@@ -227,15 +226,16 @@ function displaySearchResults(responseJson) {
             </div>
             <div id="${imdbId}" class="modal">
                 <img src="${poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
-                <section class="title_and_score">
-                <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
-                </section>
+                <div class="title-and-score">
+                <h2>${responseJson.Title}</h2>
+                <div class="review">${responseJson.imdbRating}<img class="review-icon" src="heart.png" alt="User rating score."></div>
+                </div>
                 <p>${responseJson.Plot}</p>
-                <p>Released: ${responseJson.Year}</p>
-                <p>Genre: ${responseJson.Genre}</p>
-                <p>Director: ${responseJson.Director}</p>
-                <p>Actors: ${responseJson.Actors}</p>
-                <p>Rated: ${responseJson.Rated}</p>
+                <p><span class="film-details-bolding">Released:</span> ${responseJson.Year}</p>
+                <p><span class="film-details-bolding">Genre:</span> ${responseJson.Genre}</p>
+                <p><span class="film-details-bolding">Director:</span> ${responseJson.Director}</p>
+                <p><span class="film-details-bolding">Actors:</span> ${responseJson.Actors}</p>
+                <p><span class="film-details-bolding">Rated:</span> ${responseJson.Rated}</p>
             </div>
             </div>`);
 };
@@ -269,7 +269,7 @@ function fetchMovieDetails(responseJson) {
 function noResultsFound() {
     $("main .form").empty();
     $("main .fetch-more-films-button").empty();
-    $("main .results").append("Sorry, no films available to display. Try a new search.");
+    $("main .results").append("<p>Sorry, no films available to display. Try a new search.</p>");
     displayNewSearchButton();
 };
 
