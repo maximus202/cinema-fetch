@@ -366,7 +366,7 @@ function setReleaseYear() {
     $("main .form").on("change", "input[name=start-release-year]", (event) => {
         const startReleaseYear = $("input[name=start-release-year]").val();
         SEARCH.primaryReleaseDateStart = startReleaseYear;
-    })
+    });
     $("main .form").on("change", "input[name=end-release-year]", (event) => {
         const endReleaseYear = $("input[name=end-release-year]").val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
