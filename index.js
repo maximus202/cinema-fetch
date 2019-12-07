@@ -268,7 +268,7 @@ function fetchFilmDetailsFromImdb(imdbId) {
         headers: new Headers({
             "X-RapidAPI-Key": "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
         })
-    }
+    };
     fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
         .then((response) => response.json())
         .then((responseJson) => displaySearchResults(responseJson));
@@ -407,7 +407,7 @@ function runMasterSearch() {
     $("main .form").on("click", ".master-search-submit-button", (event) => {
         event.preventDefault();
         generateMasterSearchUrlString();
-    })
+    });
 }
 
 //When find more films button is clicked, this function is triggered.
