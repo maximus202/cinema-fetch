@@ -127,11 +127,11 @@ function displaySearchForm() {
 //Keywords they want to include in their search.
 function showWithKeywordResults(responseJson) {
     $(".with-keyword-results").append(`
-        <form>`)
+        <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
                 <input id="${responseJson.results[i].id}" type="checkbox" name="with-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
-                `)
+                `);
     }
     $(".with-keyword-results").append("</form>");
 }
@@ -282,7 +282,7 @@ function fetchMovieDetails(responseJson) {
             headers: new Headers({
                 "Authorization": `Bearer ${tmdbToken}`
             })
-        }
+        };
         fetch(`https://api.themoviedb.org/3/movie/${responseJson.results[i].id}`, options)
             .then((response) => response.json())
             .then((responseJson) => fetchFilmDetailsFromImdb(responseJson.imdb_id));
@@ -415,7 +415,7 @@ function fetchMoreFilms() {
     $("main .fetch-more-films-button").on("click", "button[name=find-more-films]", (event) => {
         SEARCH.page += 1;
         $("main .form").append(generateMasterSearchUrlString());
-    })
+    });
 }
 
 //When start new search button is clicked, this function is triggered.
