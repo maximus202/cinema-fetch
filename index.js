@@ -92,7 +92,7 @@ function generateSearchForm() {
                 </fieldset>
             </form>
         <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
-};
+}
 
 //Defaults the filters to hide. Clicking them will expand each individual filter allowing
 //the user to add an input.
@@ -101,7 +101,7 @@ function hideFiltersOnLoad() {
     $("form.without-keyword").toggle();
     $("form.release-year").toggle();
     $("form.with-people").toggle();
-};
+}
 
 function toggleHideAndShowFilters() {
     $("button.with-keyword-toggle").click(function () {
@@ -116,12 +116,12 @@ function toggleHideAndShowFilters() {
     $("button.with-people-toggle").click(function () {
         $("form.with-people").toggle();
     });
-};
+}
 
 //Runs generateSearchForm() when document loads to display HTML code in generateSearchForm().
 function displaySearchForm() {
     $("main .form").html(generateSearchForm());
-};
+}
 
 //Displays API responses for withKeywords which allows users to check which 
 //Keywords they want to include in their search.
@@ -134,14 +134,14 @@ function showWithKeywordResults(responseJson) {
                 `);
     };
     $(".with-keyword-results").append("</form>");
-};
+}
 
 //Runs when an input returns with an error from the API.
 function searchFilterNotFound() {
     $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
     $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
     $(".people-results .error-message").html("No people found. Please try a different name.");
-};
+}
 
 //Fetches keyword data from TMDb.
 function fetchWithKeywordData(value) {
@@ -160,7 +160,7 @@ function fetchWithKeywordData(value) {
                 searchFilterNotFound();
             };
         });
-};
+}
 
 //Displays API responses for withoutKeywords which allows users to check which 
 //Keywords they want to exclude in their search.
@@ -173,7 +173,7 @@ function showWithoutKeywordResults(responseJson) {
                 `);
     };
     $(".without-keyword-results").append("</form>");
-};
+}
 
 //Fetches keyword data from TMDb.
 function fetchWithoutKeywordData(value) {
@@ -192,7 +192,7 @@ function fetchWithoutKeywordData(value) {
                 searchFilterNotFound();
             };
         });
-};
+}
 
 //Displays API responses for withPeopleAvailable which allows users to check which 
 //people they want to include in their search.
@@ -202,7 +202,7 @@ function showPeopleAvailable(responseJson) {
         $(".people-results").append(`<input id="${responseJson.results[i].id}" type="checkbox" name="with-people" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>`);
     };
     $(".people-results").append("</form>");
-};
+}
 
 //Fetches people available based on user input.
 function fetchWithPeople(value) {
@@ -221,18 +221,18 @@ function fetchWithPeople(value) {
                 searchFilterNotFound();
             };
         });
-};
+}
 
 //Displays button that allows user to load more results if they want to see more.
 function displayLoadMoreResultsButton() {
     $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>");
-};
+}
 
 
 //Displays button that allows user to start a new search.
 function displayNewSearchButton() {
     $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>");
-};
+}
 
 //Displays search results.
 function displaySearchResults(responseJson) {
@@ -260,7 +260,7 @@ function displaySearchResults(responseJson) {
                 <p><span class="film-details-bolding">Rated:</span> ${responseJson.Rated}</p>
             </div>
             </div>`);
-};
+}
 
 //Takes the film ids provided by the TMDb discover API call and calls the IMDb API with those ids to grab film data.
 function fetchFilmDetailsFromImdb(imdbId) {
@@ -272,7 +272,7 @@ function fetchFilmDetailsFromImdb(imdbId) {
     fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
         .then((response) => response.json())
         .then((responseJson) => displaySearchResults(responseJson));
-};
+}
 
 //Fetches film details from TMDb to extract the id which will then be passed to IMDb.
 function fetchMovieDetails(responseJson) {
@@ -287,7 +287,7 @@ function fetchMovieDetails(responseJson) {
             .then((response) => response.json())
             .then((responseJson) => fetchFilmDetailsFromImdb(responseJson.imdb_id));
     };
-};
+}
 
 //Shows message saying there haven't been films found based on their search filters.
 function noResultsFound() {
@@ -295,7 +295,7 @@ function noResultsFound() {
     $("main .fetch-more-films-button").empty();
     $("main .results").html("<p>Sorry, no films available to display. Try a new search.</p>");
     displayNewSearchButton();
-};
+}
 
 //Fetches search results based on the user's filters.
 function fetchMasterSearch(masterSearchUrlString) {
@@ -313,7 +313,7 @@ function fetchMasterSearch(masterSearchUrlString) {
                 noResultsFound();
             };
         });
-};
+}
 
 //Finds available keywords based on user input.
 function runKeywordSearch() {
@@ -327,7 +327,7 @@ function runKeywordSearch() {
         const value = $(".without-keyword-input").val();
         fetchWithoutKeywordData(value);
     });
-};
+}
 
 //Finds available people based on user input.
 function runPeopleSearch() {
@@ -336,7 +336,7 @@ function runPeopleSearch() {
         const value = $(".with-people-input").val();
         fetchWithPeople(value);
     });
-};
+}
 
 //Sets keyword ids (to include) that have been checked by the user to SEARCH array.
 function setWithKeywords() {
@@ -348,7 +348,7 @@ function setWithKeywords() {
         };
         SEARCH.withKeywords = keywordIds;
     });
-};
+}
 
 //Sets keyword ids (to exclude) that have been checked by the user to SEARCH array.
 function setWithoutKeywords() {
@@ -360,7 +360,7 @@ function setWithoutKeywords() {
         };
         SEARCH.withoutKeywords = keywordIds;
     });
-};
+}
 
 //Sets release date ranges to SEARCH array.
 function setReleaseYear() {
@@ -372,7 +372,7 @@ function setReleaseYear() {
         const endReleaseYear = $("input[name=end-release-year]").val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
     });
-};
+}
 
 //Sets people the user has checked to STORE array.
 function setPeople() {
@@ -384,7 +384,7 @@ function setPeople() {
         };
         SEARCH.withPeople = peopleIds;
     });
-};
+}
 
 //Sets the dropdown value the user clicked to STORE array.
 function setSortBy() {
@@ -392,7 +392,7 @@ function setSortBy() {
         const sortBy = $("select[name=sort-by]").val();
         SEARCH.sortBy = sortBy;
     });
-};
+}
 
 //Puts together the string that will be used in the TMDb discover API call. 
 function generateMasterSearchUrlString() {
@@ -401,7 +401,7 @@ function generateMasterSearchUrlString() {
     const withPeople = SEARCH.withPeople.join("|");
     const masterSearchUrlString = `?with_keywords=${withKeywords}&without_keywords=${withoutKeywords}&primary_release_date.gte=${SEARCH.primaryReleaseDateStart}&primary_release_date.lte=${SEARCH.primaryReleaseDateEnd}&with_people=${withPeople}&sort_by=${SEARCH.sortBy}&page=${SEARCH.page}`;
     fetchMasterSearch(masterSearchUrlString);
-};
+}
 
 //When the master search button is clicked, this function is triggered.
 function runMasterSearch() {
