@@ -193,6 +193,7 @@ input.master-search-submit-button, button[name="find-more-films"] {
 div.results {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
     align-items: center;
     padding-left: 24px;
@@ -206,8 +207,6 @@ div.results p {
 }
 
 div.container {
-    margin-left: auto;
-    margin-right: auto;
     position: relative;
     margin: 5px;
     display: flex;
@@ -217,8 +216,6 @@ div.container {
 /*poster*/
 div.container img {
     width: max-content;
-    margin-left: auto;
-    margin-right: auto;
     display: flex;
     /*flex-grow: 2;*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
