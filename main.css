@@ -206,8 +206,6 @@ div.results p {
 }
 
 div.container {
-    width: 100%;
-    height: auto;
     position: relative;
     margin: 5px;
     display: flex;
@@ -216,7 +214,6 @@ div.container {
 
 /*poster*/
 div.container img {
-    width: 100%;
     display: flex;
     /*flex-grow: 2;*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
