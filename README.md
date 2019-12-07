@@ -9,7 +9,7 @@ Cinephiles love discovering hidden gems to watch. Cinema Fetch allows them to ma
 Available filters include: Topic keywords to include/exclude, Release Dates and Cast/Crew.
 
 ## Demo
-* [See the live demo!](https://maximus202.github.io/cinema-fetch/)
+    *  [See the live demo!](https://maximus202.github.io/cinema-fetch/)
 
 ## Screenshots
 
@@ -26,24 +26,24 @@ Film Details
 ![film details](https://github.com/maximus202/cinema-fetch/blob/master/film-details.png?raw=true)
 
 ## Built With
-* HTML/CSS
-* Javascript
-* jQuery
+    *  HTML/CSS
+    *  Javascript
+    *  jQuery
 
 ## APIs Used
-* IMDb
-* TMDb
+    *  IMDb
+    *  TMDb
 
 ## Features
-* Get film recommendations from providing keywords, release dates, and cast/crew.
-* Sort search results by popularity, release date, and number of reviews.
+    *  Get film recommendations from providing keywords, release dates, and cast/crew.
+    *  Sort search results by popularity, release date, and number of reviews.
 
 ## Coming soon
-* Providing information on where each title is available for streaming.
-* Country/region filter to target foreign films.
-* Genre filter.
-* Specific-film finder.
-* Similar films recommended on a per film basis.
+    *  Providing information on where each title is available for streaming.
+    *  Country/region filter to target foreign films.
+    *  Genre filter.
+    *  Specific-film finder.
+    *  Similar films recommended on a per film basis.
 
 ## Last updated
 December 6, 2019.

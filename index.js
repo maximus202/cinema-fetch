@@ -382,7 +382,7 @@ function setPeople() {
         for (let i = 0; i < people.length; i++) {
             peopleIds.push(people[i].value);
         };
-        SEARCH.withPeople = peopleIds
+        SEARCH.withPeople = peopleIds;
     });
 };
 
@@ -417,7 +417,7 @@ function fetchMoreFilms() {
         SEARCH.page += 1;
         $("main .form").append(generateMasterSearchUrlString());
     });
-};
+}
 
 //When start new search button is clicked, this function is triggered.
 function startNewSearch() {
