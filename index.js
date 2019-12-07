@@ -211,7 +211,7 @@ function fetchWithPeople(value) {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    }
+    };
     fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -390,7 +390,7 @@ function setSortBy() {
     $("main .form").on("change", "select[name=sort-by]", (event) => {
         const sortBy = $("select[name=sort-by]").val();
         SEARCH.sortBy = sortBy;
-    })
+    });
 }
 
 //Puts together the string that will be used in the TMDb discover API call. 
