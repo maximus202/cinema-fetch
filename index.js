@@ -1,3 +1,6 @@
+/*SEARCH stores the ids returned by TMDb api for withKeywords, withoutKeywords, and withPeople to later be used
+in the discover API call. It also stores the input value provided by the user for release dates to filter by and 
+how the program should sort the searh results.*/
 const SEARCH = {
     withKeywords: [],
     withoutKeywords: [],
@@ -8,14 +11,16 @@ const SEARCH = {
     page: 1,
 };
 
+//API tokens
 const tmdbToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MTNlNmVlYjIwOGIxZWUxYWFiMDJjMjhiMjZjMDhiMSIsInN1YiI6IjVkZDI5Njg0NTdkMzc4MDAxM2RiNmVjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.kXb3Vsx5XBDev3UHF7TnX8EDYPfvuKhNKSGMC2lkxzk";
 const apiKey = "813e6eeb208b1ee1aab02c28b26c08b1";
 const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 
+//Contains code that makes the form (Keyword, release date, cast/crew filters).
 function generateSearchForm() {
     return `
     <div class="intro">
-            <p>Start a fetch</p>
+            <h3>Start a fetch</h3>
         </div>
             <button class="with-keyword-toggle"><img src="target.png" alt="Keywords to include icon.">
             <h3>Keywords to include</h3>
@@ -89,6 +94,8 @@ function generateSearchForm() {
         <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
 };
 
+//Defaults the filters to hide. Clicking them will expand each individual filter allowing
+//the user to add an input.
 function hideFiltersOnLoad() {
     $("form.with-keyword").toggle();
     $("form.without-keyword").toggle();
@@ -111,27 +118,32 @@ function toggleHideAndShowFilters() {
     });
 };
 
+//Runs generateSearchForm() when document loads to display HTML code in generateSearchForm().
 function displaySearchForm() {
     $("main .form").html(generateSearchForm());
 };
 
+//Displays API responses for withKeywords which allows users to check which 
+//Keywords they want to include in their search.
 function showWithKeywordResults(responseJson) {
     $(".with-keyword-results").append(`
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
-                <input type="checkbox" name="with-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                <input id="${responseJson.results[i].id}" type="checkbox" name="with-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
                 `);
     };
     $(".with-keyword-results").append("</form>");
 };
 
+//Runs when an input returns with an error from the API.
 function searchFilterNotFound() {
     $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
     $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
     $(".people-results .error-message").html("No people found. Please try a different name.");
 };
 
+//Fetches keyword data from TMDb.
 function fetchWithKeywordData(value) {
     $(".with-keyword-results .error-message").empty();
     const options = {
@@ -150,22 +162,25 @@ function fetchWithKeywordData(value) {
         });
 };
 
+//Displays API responses for withoutKeywords which allows users to check which 
+//Keywords they want to exclude in their search.
 function showWithoutKeywordResults(responseJson) {
     $(".without-keyword-results").append(`
         <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".without-keyword-results").append(`
-                <input type="checkbox" name="without-keyword" value="${responseJson.results[i].id}">${responseJson.results[i].name}
+                <input id="${responseJson.results[i].id}" type="checkbox" name="without-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
                 `);
     };
     $(".without-keyword-results").append("</form>");
 };
 
+//Fetches keyword data from TMDb.
 function fetchWithoutKeywordData(value) {
     $(".without-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
+            "Authorization": `Bearer ${tmdbToken}`
         })
     };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
@@ -179,6 +194,8 @@ function fetchWithoutKeywordData(value) {
         });
 };
 
+//Displays API responses for withPeopleAvailable which allows users to check which 
+//people they want to include in their search.
 function showPeopleAvailable(responseJson) {
     $(".people-results").append("<form>");
     for (let i = 0; i < responseJson.results.length; i++) {
@@ -187,11 +204,12 @@ function showPeopleAvailable(responseJson) {
     $(".people-results").append("</form>");
 };
 
+//Fetches people available based on user input.
 function fetchWithPeople(value) {
     $(".people-results .error-message").empty();
     const options = {
         headers: new Headers({
-            'Authorization': `Bearer ${tmdbToken}`
+            "Authorization": `Bearer ${tmdbToken}`
         })
     };
     fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
@@ -205,19 +223,22 @@ function fetchWithPeople(value) {
         });
 };
 
+//Displays button that allows user to load more results if they want to see more.
 function displayLoadMoreResultsButton() {
     $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>");
 };
 
+
+//Displays button that allows user to start a new search.
 function displayNewSearchButton() {
     $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>");
 };
 
+//Displays search results.
 function displaySearchResults(responseJson) {
     const imdbId = responseJson.imdbID;
     const poster = responseJson.Poster.toUpperCase().trim() === "N/A" ? "poster_not_available.png" : responseJson.Poster;
     displayNewSearchButton();
-
     $("main .results").append(`
             <div class="container">
                 <img src="${poster}" alt="${responseJson.Title} poster.">
@@ -227,19 +248,21 @@ function displaySearchResults(responseJson) {
             </div>
             <div id="${imdbId}" class="modal">
                 <img src="${poster}" alt="Still from ${responseJson.Title} poster." class="screen-still">
-                <section class="title_and_score">
-                <h3><span class="title">${responseJson.Title}</span> <span class="reviews">${responseJson.imdbRating}<img src="favorite.png" alt="User rating score."></span></h3>
-                </section>
+                <div class="title-and-score">
+                <h2>${responseJson.Title}</h2>
+                <div class="review">${responseJson.imdbRating}<img class="review-icon" src="heart.png" alt="User rating score."></div>
+                </div>
                 <p>${responseJson.Plot}</p>
-                <p>Released: ${responseJson.Year}</p>
-                <p>Genre: ${responseJson.Genre}</p>
-                <p>Director: ${responseJson.Director}</p>
-                <p>Actors: ${responseJson.Actors}</p>
-                <p>Rated: ${responseJson.Rated}</p>
+                <p><span class="film-details-bolding">Released:</span> ${responseJson.Year}</p>
+                <p><span class="film-details-bolding">Genre:</span> ${responseJson.Genre}</p>
+                <p><span class="film-details-bolding">Director:</span> ${responseJson.Director}</p>
+                <p><span class="film-details-bolding">Actors:</span> ${responseJson.Actors}</p>
+                <p><span class="film-details-bolding">Rated:</span> ${responseJson.Rated}</p>
             </div>
             </div>`);
 };
 
+//Takes the film ids provided by the TMDb discover API call and calls the IMDb API with those ids to grab film data.
 function fetchFilmDetailsFromImdb(imdbId) {
     const imdbOptions = {
         headers: new Headers({
@@ -251,13 +274,13 @@ function fetchFilmDetailsFromImdb(imdbId) {
         .then((responseJson) => displaySearchResults(responseJson));
 };
 
+//Fetches film details from TMDb to extract the id which will then be passed to IMDb.
 function fetchMovieDetails(responseJson) {
-    $("main .form").empty();
     for (let i = 0; i < responseJson.results.length; i++) {
         displayLoadMoreResultsButton();
         const options = {
             headers: new Headers({
-                'Authorization': `Bearer ${tmdbToken}`
+                "Authorization": `Bearer ${tmdbToken}`
             })
         };
         fetch(`https://api.themoviedb.org/3/movie/${responseJson.results[i].id}`, options)
@@ -266,13 +289,15 @@ function fetchMovieDetails(responseJson) {
     };
 };
 
+//Shows message saying there haven't been films found based on their search filters.
 function noResultsFound() {
-    $("main .form").empty();
+    //$("main .form").empty();
     $("main .fetch-more-films-button").empty();
-    $("main .results").append("Sorry, no films available to display. Try a new search.");
+    $("main .results").html("<p>Sorry, no films available to display. Try a new search.</p>");
     displayNewSearchButton();
 };
 
+//Fetches search results based on the user's filters.
 function fetchMasterSearch(masterSearchUrlString) {
     const options = {
         headers: new Headers({
@@ -290,6 +315,7 @@ function fetchMasterSearch(masterSearchUrlString) {
         });
 };
 
+//Finds available keywords based on user input.
 function runKeywordSearch() {
     $("main .form").on("click", ".with-keyword-submit-button", (event) => {
         event.preventDefault();
@@ -303,6 +329,7 @@ function runKeywordSearch() {
     });
 };
 
+//Finds available people based on user input.
 function runPeopleSearch() {
     $("main .form").on("click", ".with-people-submit-button", (event) => {
         event.preventDefault();
@@ -311,6 +338,7 @@ function runPeopleSearch() {
     });
 };
 
+//Sets keyword ids (to include) that have been checked by the user to SEARCH array.
 function setWithKeywords() {
     $("main .form").on("change", "input[name=with-keyword]", (event) => {
         const checkedBoxes = $("input[name=with-keyword]:checked");
@@ -322,6 +350,7 @@ function setWithKeywords() {
     });
 };
 
+//Sets keyword ids (to exclude) that have been checked by the user to SEARCH array.
 function setWithoutKeywords() {
     $("main .form").on("change", "input[name=without-keyword]", (event) => {
         const checkedBoxes = $("input[name=without-keyword]:checked");
@@ -333,6 +362,7 @@ function setWithoutKeywords() {
     });
 };
 
+//Sets release date ranges to SEARCH array.
 function setReleaseYear() {
     $("main .form").on("change", "input[name=start-release-year]", (event) => {
         const startReleaseYear = $("input[name=start-release-year]").val();
@@ -344,6 +374,7 @@ function setReleaseYear() {
     });
 };
 
+//Sets people the user has checked to STORE array.
 function setPeople() {
     $("main .form").on("change", "input[name=with-people]", (event) => {
         const people = $("input[name=with-people]:checked");
@@ -351,10 +382,11 @@ function setPeople() {
         for (let i = 0; i < people.length; i++) {
             peopleIds.push(people[i].value);
         };
-        SEARCH.withPeople = peopleIds;
+        SEARCH.withPeople = peopleIds
     });
 };
 
+//Sets the dropdown value the user clicked to STORE array.
 function setSortBy() {
     $("main .form").on("change", "select[name=sort-by]", (event) => {
         const sortBy = $("select[name=sort-by]").val();
@@ -362,6 +394,7 @@ function setSortBy() {
     });
 };
 
+//Puts together the string that will be used in the TMDb discover API call. 
 function generateMasterSearchUrlString() {
     const withKeywords = SEARCH.withKeywords.join("|");
     const withoutKeywords = SEARCH.withoutKeywords.join("|");
@@ -370,6 +403,7 @@ function generateMasterSearchUrlString() {
     fetchMasterSearch(masterSearchUrlString);
 };
 
+//When the master search button is clicked, this function is triggered.
 function runMasterSearch() {
     $("main .form").on("click", ".master-search-submit-button", (event) => {
         event.preventDefault();
@@ -377,6 +411,7 @@ function runMasterSearch() {
     });
 };
 
+//When find more films button is clicked, this function is triggered.
 function fetchMoreFilms() {
     $("main .fetch-more-films-button").on("click", "button[name=find-more-films]", (event) => {
         SEARCH.page += 1;
@@ -384,12 +419,14 @@ function fetchMoreFilms() {
     });
 };
 
+//When start new search button is clicked, this function is triggered.
 function startNewSearch() {
     $("main .new-search-button").on("click", "button[name=start-new-search]", (event) => {
         location.reload();
     });
 }
 
+//These functions are triggerd on page load.
 $(function () {
     displaySearchForm();
     hideFiltersOnLoad();
