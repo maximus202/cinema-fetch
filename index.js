@@ -409,7 +409,7 @@ function runMasterSearch() {
         event.preventDefault();
         generateMasterSearchUrlString();
     });
-};
+}
 
 //When find more films button is clicked, this function is triggered.
 function fetchMoreFilms() {
