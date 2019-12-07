@@ -301,7 +301,7 @@ function fetchMasterSearch(masterSearchUrlString) {
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
-        })
+        });
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
@@ -311,7 +311,7 @@ function fetchMasterSearch(masterSearchUrlString) {
             } else {
                 noResultsFound();
             }
-        })
+        });
 }
 
 //Finds available keywords based on user input.
@@ -320,12 +320,12 @@ function runKeywordSearch() {
         event.preventDefault();
         const value = $(".with-keyword-input").val();
         fetchWithKeywordData(value);
-    })
+    });
     $("main .form").on("click", ".without-keyword-submit-button", (event) => {
         event.preventDefault();
         const value = $(".without-keyword-input").val();
         fetchWithoutKeywordData(value);
-    })
+    });
 }
 
 //Finds available people based on user input.
@@ -334,7 +334,7 @@ function runPeopleSearch() {
         event.preventDefault();
         const value = $(".with-people-input").val();
         fetchWithPeople(value);
-    })
+    });
 }
 
 //Sets keyword ids (to include) that have been checked by the user to SEARCH array.
@@ -346,7 +346,7 @@ function setWithKeywords() {
             keywordIds.push(checkedBoxes[i].value);
         }
         SEARCH.withKeywords = keywordIds;
-    })
+    });
 }
 
 //Sets keyword ids (to exclude) that have been checked by the user to SEARCH array.
