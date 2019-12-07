@@ -48,15 +48,18 @@ header {
     padding-bottom: 18px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     min-height: 100vh;
+    align-items: center;
+    text-align: center;
 }
 
 header h1 {
   font-size: 24px;
   line-height: 30px;
-  padding-right: 20%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 img.logo {
@@ -193,11 +196,11 @@ input.master-search-submit-button, button[name="find-more-films"] {
 div.results {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     flex-wrap: wrap;
     align-items: center;
-    padding-left: 24px;
-    padding-right: 24px;
+    justify-content: center;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 
 div.results p {
@@ -207,15 +210,17 @@ div.results p {
 }
 
 div.container {
-    position: relative;
+  position: relative;
+    margin-left: auto;
+    margin-right: auto;
     margin: 5px;
     display: flex;
-    /*flex-grow: 2;*/
+    flex-grow: 1;
 }
 
 /*poster*/
 div.container img {
-    width: max-content;
+    width: 100%;
     display: flex;
     /*flex-grow: 2;*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -228,7 +233,7 @@ div.bottom-left {
     left: 0;
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     background: linear-gradient( to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8) );
     border-radius: 0 0 10px 10px;
@@ -238,7 +243,7 @@ div.bottom-left {
 div.bottom-left h3 {
     color: white;
     opacity: 100%;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 /*More details button*/
@@ -246,6 +251,7 @@ div.bottom-left img {
     width: 30px;
     box-shadow: none;
     margin-left: 5px;
+    margin-bottom: 10px;
 }
 
 img.screen-still {
@@ -338,44 +344,6 @@ footer p, footer div, footer a {
 }
 
 @media only screen and (min-width: 768px) {
-  header {
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-  }
-
-header h1 {
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  img.logo {
-    width: 200px;
-    margin-bottom: 50px;
-  }
-  
-  main {
-    width: 80%;
-  }
-
-  div.container {
-      /*flex-grow: 2;*/
-      width: 200px;
-      margin: 30px;
-  }
-
-  div.container img {
-    /*flex-grow: 2;*/
-    width: 200px;
-  }
-
-  div.bottom-left img {
-    width: 25px;
-}
-}
-
-@media only screen and (min-width: 1024px) {
   div.form {
     width: 60%;
     margin-left: auto;
@@ -383,14 +351,14 @@ header h1 {
   }
 
   div.container {
-      /*flex-grow: 2;*/
       width: 150px;
       margin: 30px;
+      flex-grow: 0;
   }
 
   div.container img {
-    /*flex-grow: 2;*/
     width: 150px;
+    flex-grow: 0;
   }
 
   div.bottom-left img {
