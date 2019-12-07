@@ -381,7 +381,7 @@ function setPeople() {
         const peopleIds = [];
         for (let i = 0; i < people.length; i++) {
             peopleIds.push(people[i].value);
-        };
+        }
         SEARCH.withPeople = peopleIds;
     });
 }
