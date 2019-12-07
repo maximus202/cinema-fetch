@@ -120,7 +120,7 @@ function toggleHideAndShowFilters() {
 
 //Runs generateSearchForm() when document loads to display HTML code in generateSearchForm().
 function displaySearchForm() {
-    $("main .form").html(generateSearchForm())
+    $("main .form").html(generateSearchForm());
 }
 
 //Displays API responses for withKeywords which allows users to check which 
@@ -133,19 +133,19 @@ function showWithKeywordResults(responseJson) {
                 <input id="${responseJson.results[i].id}" type="checkbox" name="with-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
                 `)
     }
-    $(".with-keyword-results").append("</form>")
+    $(".with-keyword-results").append("</form>");
 }
 
 //Runs when an input returns with an error from the API.
 function searchFilterNotFound() {
-    $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.")
-    $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.")
-    $(".people-results .error-message").html("No people found. Please try a different name.")
+    $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
+    $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
+    $(".people-results .error-message").html("No people found. Please try a different name.");
 }
 
 //Fetches keyword data from TMDb.
 function fetchWithKeywordData(value) {
-    $(".with-keyword-results .error-message").empty()
+    $(".with-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
@@ -155,7 +155,7 @@ function fetchWithKeywordData(value) {
         .then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.results.length) {
-                showWithKeywordResults(responseJson)
+                showWithKeywordResults(responseJson);
             } else {
                 searchFilterNotFound();
             }
@@ -166,18 +166,18 @@ function fetchWithKeywordData(value) {
 //Keywords they want to exclude in their search.
 function showWithoutKeywordResults(responseJson) {
     $(".without-keyword-results").append(`
-        <form>`)
+        <form>`);
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".without-keyword-results").append(`
                 <input id="${responseJson.results[i].id}" type="checkbox" name="without-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
-                `)
+                `);
     }
-    $(".without-keyword-results").append("</form>")
+    $(".without-keyword-results").append("</form>");
 }
 
 //Fetches keyword data from TMDb.
 function fetchWithoutKeywordData(value) {
-    $(".without-keyword-results .error-message").empty()
+    $(".without-keyword-results .error-message").empty();
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
@@ -187,9 +187,9 @@ function fetchWithoutKeywordData(value) {
         .then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.results.length) {
-                showWithoutKeywordResults(responseJson)
+                showWithoutKeywordResults(responseJson);
             } else {
-                searchFilterNotFound()
+                searchFilterNotFound();
             }
         })
 }
@@ -197,11 +197,11 @@ function fetchWithoutKeywordData(value) {
 //Displays API responses for withPeopleAvailable which allows users to check which 
 //people they want to include in their search.
 function showPeopleAvailable(responseJson) {
-    $(".people-results").append("<form>")
+    $(".people-results").append("<form>");
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".people-results").append(`<input id="${responseJson.results[i].id}" type="checkbox" name="with-people" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>`);
     }
-    $(".people-results").append("</form>")
+    $(".people-results").append("</form>");
 }
 
 //Fetches people available based on user input.
@@ -225,13 +225,13 @@ function fetchWithPeople(value) {
 
 //Displays button that allows user to load more results if they want to see more.
 function displayLoadMoreResultsButton() {
-    $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>")
+    $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>");
 }
 
 
 //Displays button that allows user to start a new search.
 function displayNewSearchButton() {
-    $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>")
+    $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>");
 }
 
 //Displays search results.
@@ -259,7 +259,7 @@ function displaySearchResults(responseJson) {
                 <p><span class="film-details-bolding">Actors:</span> ${responseJson.Actors}</p>
                 <p><span class="film-details-bolding">Rated:</span> ${responseJson.Rated}</p>
             </div>
-            </div>`)
+            </div>`);
 }
 
 //Takes the film ids provided by the TMDb discover API call and calls the IMDb API with those ids to grab film data.
@@ -302,7 +302,7 @@ function fetchMasterSearch(masterSearchUrlString) {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    }
+    };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -422,7 +422,7 @@ function fetchMoreFilms() {
 function startNewSearch() {
     $("main .new-search-button").on("click", "button[name=start-new-search]", (event) => {
         location.reload();
-    })
+    });
 }
 
 //These functions are triggerd on page load.
