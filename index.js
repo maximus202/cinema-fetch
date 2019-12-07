@@ -370,7 +370,7 @@ function setReleaseYear() {
     $("main .form").on("change", "input[name=end-release-year]", (event) => {
         const endReleaseYear = $("input[name=end-release-year]").val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
-    })
+    });
 }
 
 //Sets people the user has checked to STORE array.
