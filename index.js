@@ -106,78 +106,78 @@ function hideFiltersOnLoad() {
 function toggleHideAndShowFilters() {
     $("button.with-keyword-toggle").click(function () {
         $("form.with-keyword").toggle();
-    });
+    })
     $("button.without-keyword-toggle").click(function () {
         $("form.without-keyword").toggle();
-    });
+    })
     $("button.release-year-toggle").click(function () {
         $("form.release-year").toggle();
-    });
+    })
     $("button.with-people-toggle").click(function () {
         $("form.with-people").toggle();
-    });
+    })
 }
 
 //Runs generateSearchForm() when document loads to display HTML code in generateSearchForm().
 function displaySearchForm() {
-    $("main .form").html(generateSearchForm());
+    $("main .form").html(generateSearchForm())
 }
 
 //Displays API responses for withKeywords which allows users to check which 
 //Keywords they want to include in their search.
 function showWithKeywordResults(responseJson) {
     $(".with-keyword-results").append(`
-        <form>`);
+        <form>`)
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".with-keyword-results").append(`
                 <input id="${responseJson.results[i].id}" type="checkbox" name="with-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
-                `);
-    };
-    $(".with-keyword-results").append("</form>");
+                `)
+    }
+    $(".with-keyword-results").append("</form>")
 }
 
 //Runs when an input returns with an error from the API.
 function searchFilterNotFound() {
-    $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
-    $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.");
-    $(".people-results .error-message").html("No people found. Please try a different name.");
+    $(".with-keyword-results .error-message").html("No keywords found. Please try a different keyword.")
+    $(".without-keyword-results .error-message").html("No keywords found. Please try a different keyword.")
+    $(".people-results .error-message").html("No people found. Please try a different name.")
 }
 
 //Fetches keyword data from TMDb.
 function fetchWithKeywordData(value) {
-    $(".with-keyword-results .error-message").empty();
+    $(".with-keyword-results .error-message").empty()
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    };
+    }
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.results.length) {
-                showWithKeywordResults(responseJson);
+                showWithKeywordResults(responseJson)
             } else {
                 searchFilterNotFound();
-            };
-        });
+            }
+        })
 }
 
 //Displays API responses for withoutKeywords which allows users to check which 
 //Keywords they want to exclude in their search.
 function showWithoutKeywordResults(responseJson) {
     $(".without-keyword-results").append(`
-        <form>`);
+        <form>`)
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".without-keyword-results").append(`
                 <input id="${responseJson.results[i].id}" type="checkbox" name="without-keyword" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>
-                `);
-    };
-    $(".without-keyword-results").append("</form>");
+                `)
+    }
+    $(".without-keyword-results").append("</form>")
 }
 
 //Fetches keyword data from TMDb.
 function fetchWithoutKeywordData(value) {
-    $(".without-keyword-results .error-message").empty();
+    $(".without-keyword-results .error-message").empty()
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
@@ -187,21 +187,21 @@ function fetchWithoutKeywordData(value) {
         .then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.results.length) {
-                showWithoutKeywordResults(responseJson);
+                showWithoutKeywordResults(responseJson)
             } else {
-                searchFilterNotFound();
-            };
-        });
+                searchFilterNotFound()
+            }
+        })
 }
 
 //Displays API responses for withPeopleAvailable which allows users to check which 
 //people they want to include in their search.
 function showPeopleAvailable(responseJson) {
-    $(".people-results").append("<form>");
+    $(".people-results").append("<form>")
     for (let i = 0; i < responseJson.results.length; i++) {
         $(".people-results").append(`<input id="${responseJson.results[i].id}" type="checkbox" name="with-people" value="${responseJson.results[i].id}"><label for="${responseJson.results[i].id}">${responseJson.results[i].name}</label>`);
-    };
-    $(".people-results").append("</form>");
+    }
+    $(".people-results").append("</form>")
 }
 
 //Fetches people available based on user input.
@@ -211,7 +211,7 @@ function fetchWithPeople(value) {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    };
+    }
     fetch(`https://api.themoviedb.org/3/search/person?query=${value}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -219,19 +219,19 @@ function fetchWithPeople(value) {
                 showPeopleAvailable(responseJson);
             } else {
                 searchFilterNotFound();
-            };
-        });
+            }
+        })
 }
 
 //Displays button that allows user to load more results if they want to see more.
 function displayLoadMoreResultsButton() {
-    $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>");
+    $("main .fetch-more-films-button").html("<button type='button' name='find-more-films'>Find more films</button>")
 }
 
 
 //Displays button that allows user to start a new search.
 function displayNewSearchButton() {
-    $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>");
+    $("main .new-search-button").html("<button type='button' name='start-new-search'>New Search</button>")
 }
 
 //Displays search results.
@@ -259,7 +259,7 @@ function displaySearchResults(responseJson) {
                 <p><span class="film-details-bolding">Actors:</span> ${responseJson.Actors}</p>
                 <p><span class="film-details-bolding">Rated:</span> ${responseJson.Rated}</p>
             </div>
-            </div>`);
+            </div>`)
 }
 
 //Takes the film ids provided by the TMDb discover API call and calls the IMDb API with those ids to grab film data.
@@ -268,7 +268,7 @@ function fetchFilmDetailsFromImdb(imdbId) {
         headers: new Headers({
             "X-RapidAPI-Key": "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470"
         })
-    };
+    }
     fetch(`https://movie-database-imdb-alternative.p.rapidapi.com/?i=${imdbId}`, imdbOptions)
         .then((response) => response.json())
         .then((responseJson) => displaySearchResults(responseJson));
@@ -282,16 +282,15 @@ function fetchMovieDetails(responseJson) {
             headers: new Headers({
                 "Authorization": `Bearer ${tmdbToken}`
             })
-        };
+        }
         fetch(`https://api.themoviedb.org/3/movie/${responseJson.results[i].id}`, options)
             .then((response) => response.json())
             .then((responseJson) => fetchFilmDetailsFromImdb(responseJson.imdb_id));
-    };
+    }
 }
 
 //Shows message saying there haven't been films found based on their search filters.
 function noResultsFound() {
-    //$("main .form").empty();
     $("main .fetch-more-films-button").empty();
     $("main .results").html("<p>Sorry, no films available to display. Try a new search.</p>");
     displayNewSearchButton();
@@ -303,7 +302,7 @@ function fetchMasterSearch(masterSearchUrlString) {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    };
+    }
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -311,8 +310,8 @@ function fetchMasterSearch(masterSearchUrlString) {
                 fetchMovieDetails(responseJson);
             } else {
                 noResultsFound();
-            };
-        });
+            }
+        })
 }
 
 //Finds available keywords based on user input.
@@ -321,12 +320,12 @@ function runKeywordSearch() {
         event.preventDefault();
         const value = $(".with-keyword-input").val();
         fetchWithKeywordData(value);
-    });
+    })
     $("main .form").on("click", ".without-keyword-submit-button", (event) => {
         event.preventDefault();
         const value = $(".without-keyword-input").val();
         fetchWithoutKeywordData(value);
-    });
+    })
 }
 
 //Finds available people based on user input.
@@ -335,7 +334,7 @@ function runPeopleSearch() {
         event.preventDefault();
         const value = $(".with-people-input").val();
         fetchWithPeople(value);
-    });
+    })
 }
 
 //Sets keyword ids (to include) that have been checked by the user to SEARCH array.
@@ -345,9 +344,9 @@ function setWithKeywords() {
         const keywordIds = [];
         for (let i = 0; i < checkedBoxes.length; i++) {
             keywordIds.push(checkedBoxes[i].value);
-        };
+        }
         SEARCH.withKeywords = keywordIds;
-    });
+    })
 }
 
 //Sets keyword ids (to exclude) that have been checked by the user to SEARCH array.
@@ -357,9 +356,9 @@ function setWithoutKeywords() {
         const keywordIds = [];
         for (let i = 0; i < checkedBoxes.length; i++) {
             keywordIds.push(checkedBoxes[i].value);
-        };
+        }
         SEARCH.withoutKeywords = keywordIds;
-    });
+    })
 }
 
 //Sets release date ranges to SEARCH array.
@@ -367,11 +366,11 @@ function setReleaseYear() {
     $("main .form").on("change", "input[name=start-release-year]", (event) => {
         const startReleaseYear = $("input[name=start-release-year]").val();
         SEARCH.primaryReleaseDateStart = startReleaseYear;
-    });
+    })
     $("main .form").on("change", "input[name=end-release-year]", (event) => {
         const endReleaseYear = $("input[name=end-release-year]").val();
         SEARCH.primaryReleaseDateEnd = endReleaseYear;
-    });
+    })
 }
 
 //Sets people the user has checked to STORE array.
@@ -383,7 +382,7 @@ function setPeople() {
             peopleIds.push(people[i].value);
         }
         SEARCH.withPeople = peopleIds;
-    });
+    })
 }
 
 //Sets the dropdown value the user clicked to STORE array.
@@ -391,7 +390,7 @@ function setSortBy() {
     $("main .form").on("change", "select[name=sort-by]", (event) => {
         const sortBy = $("select[name=sort-by]").val();
         SEARCH.sortBy = sortBy;
-    });
+    })
 }
 
 //Puts together the string that will be used in the TMDb discover API call. 
@@ -408,7 +407,7 @@ function runMasterSearch() {
     $("main .form").on("click", ".master-search-submit-button", (event) => {
         event.preventDefault();
         generateMasterSearchUrlString();
-    });
+    })
 }
 
 //When find more films button is clicked, this function is triggered.
@@ -416,14 +415,14 @@ function fetchMoreFilms() {
     $("main .fetch-more-films-button").on("click", "button[name=find-more-films]", (event) => {
         SEARCH.page += 1;
         $("main .form").append(generateMasterSearchUrlString());
-    });
+    })
 }
 
 //When start new search button is clicked, this function is triggered.
 function startNewSearch() {
     $("main .new-search-button").on("click", "button[name=start-new-search]", (event) => {
         location.reload();
-    });
+    })
 }
 
 //These functions are triggerd on page load.
