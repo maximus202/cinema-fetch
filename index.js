@@ -220,7 +220,7 @@ function fetchWithPeople(value) {
             } else {
                 searchFilterNotFound();
             }
-        })
+        });
 }
 
 //Displays button that allows user to load more results if they want to see more.
