@@ -360,13 +360,13 @@ header h1 {
   }
 
   div.container {
-      flex-grow: 2;
+      /*flex-grow: 2;*/
       width: 200px;
       margin: 30px;
   }
 
   div.container img {
-    flex-grow: 2;
+    /*flex-grow: 2;*/
     width: 200px;
   }
 
@@ -383,13 +383,13 @@ header h1 {
   }
 
   div.container {
-      flex-grow: 2;
+      /*flex-grow: 2;*/
       width: 150px;
       margin: 30px;
   }
 
   div.container img {
-    flex-grow: 2;
+    /*flex-grow: 2;*/
     width: 150px;
   }
 
