@@ -39,9 +39,8 @@ body {
 
 header {
     background: linear-gradient(
-      #31313742, 
-      #31313742
-    ), url('');
+      #AE989D, 
+      #443845);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
