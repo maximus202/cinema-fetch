@@ -150,7 +150,7 @@ function fetchWithKeywordData(value) {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
         })
-    }
+    };
     fetch(`https://api.themoviedb.org/3/search/keyword?query=${value}`, options)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -382,7 +382,7 @@ function setPeople() {
             peopleIds.push(people[i].value);
         }
         SEARCH.withPeople = peopleIds;
-    })
+    });
 }
 
 //Sets the dropdown value the user clicked to STORE array.
