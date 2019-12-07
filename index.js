@@ -358,7 +358,7 @@ function setWithoutKeywords() {
             keywordIds.push(checkedBoxes[i].value);
         }
         SEARCH.withoutKeywords = keywordIds;
-    })
+    });
 }
 
 //Sets release date ranges to SEARCH array.
