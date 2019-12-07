@@ -301,7 +301,7 @@ function fetchMasterSearch(masterSearchUrlString) {
     const options = {
         headers: new Headers({
             "Authorization": `Bearer ${tmdbToken}`
-        });
+        })
     };
     fetch(`https://api.themoviedb.org/3/discover/movie${masterSearchUrlString}`, options)
         .then((response) => response.json())
