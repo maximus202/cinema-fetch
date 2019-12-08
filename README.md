@@ -9,7 +9,7 @@ Cinephiles love discovering hidden gems to watch. Cinema Fetch allows them to ma
 Available filters include: Topic keywords to include/exclude, Release Dates and Cast/Crew.
 
 ## Demo
-    *  ![See the live demo!](https://maximus202.github.io/cinema-fetch/)
+-  [See the live demo](https://maximus202.github.io/cinema-fetch/)
 
 ## Screenshots
 
