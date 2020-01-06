@@ -38,11 +38,13 @@ body {
 }
 
 header {
-    background: linear-gradient(
+    background-image: url('madmax.png');
+    background-position: bottom;
+    /*background: linear-gradient(
       #AE989D, 
       #443845);
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center;*/
     background-size: cover;
     padding: 24px;
     padding-bottom: 18px;
