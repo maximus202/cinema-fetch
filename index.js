@@ -19,12 +19,9 @@ const imdbApiKey = "0823bc3d86mshee07fc4e8741c97p13dedcjsn9e48b49e1470";
 //Contains code that makes the form (Keyword, release date, cast/crew filters).
 function generateSearchForm() {
     return `
-    <div class="intro">
-            <h3>Start a fetch</h3>
-        </div>
             <button class="with-keyword-toggle"><img src="target.png" alt="Keywords to include icon.">
             <h3>Keywords to include</h3>
-            <p>Feel like watching a murder mystery? Or maybe get transported to Italy? Add keywords to filter your search.</p>
+            <p>Click to add keywords you want to INCLUDE in your recommendations.</p>
             </button>
                 <form class="with-keyword">
                     <fieldset class="with-keyword">
@@ -38,7 +35,7 @@ function generateSearchForm() {
                 </form>
             <button class="without-keyword-toggle"><img src="eraser.png" alt="Keywords to exclude icon.">
             <h3>Keywords to exclude</h3>
-            <p>Maybe you DON'T want to see movies related to aliens... or you hate spoofs. No judgement. Add keywords to exclude from your search.</p>
+            <p>Click to add keywords you want to EXCLUDE from your recommendations.</p>
             </button>
                 <form class="without-keyword">
                     <fieldset class="without-keyword">
@@ -52,7 +49,7 @@ function generateSearchForm() {
                 </form>
             <button class="release-year-toggle"><img src="calendar.png" alt="Release date icon.">
             <h3>Release Date</h3>
-            <p>Feelin' nostalgic? Use this release date filter to target films released in a specific date range.</p>
+            <p>Click to filter results withing a release date range.</p>
             </button>
                 <form class="release-year">
                     <fieldset>
@@ -65,7 +62,7 @@ function generateSearchForm() {
                 </form>
             <button class="with-people-toggle"><img src="network.png" alt="Cast and crew icon.">
             <h3>Cast and Crew</h3>
-            <p>Fan of Tim Burton's eccentric style or Tarantino's colorful dialogue? Add your chosen cast and crew members to filter movies similar to their styles.</p>
+            <p>Specify any cast/crew members whose style you enjoy.</p>
             </button>
                 <form class="with-people">
                     <fieldset class="with-people">
@@ -91,7 +88,7 @@ function generateSearchForm() {
                     </select>
                 </fieldset>
             </form>
-        <input type="submit" name="run-master-search" class="master-search-submit-button" value="Fetch movies!">`;
+        <button type="submit" name="run-master-search" class="master-search-submit-button">Get recommendations!</button>`
 }
 
 //Defaults the filters to hide. Clicking them will expand each individual filter allowing
